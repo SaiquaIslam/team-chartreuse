@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -16,7 +18,7 @@
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
-require "test_helper"
+require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   # test "the truth" do
