@@ -2,11 +2,7 @@
 
 ## Team Members
 
-- Tanvir Ahmed Joy
-# Team Chartreuse
-
-## Team Members
-
+- Tanvir Ahmed Joy (taj.joy@gmail.com)
 - Saiqua Islam
 
 ## How to Initialize and Run the App
