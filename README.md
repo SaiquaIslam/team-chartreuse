@@ -2,7 +2,11 @@
 
 ## Team Members
 
+
 - Rafy
+- Tanvir Ahmed Joy
+- Saiqua Islam
+
 
 ## How to Initialize and Run the App
 
