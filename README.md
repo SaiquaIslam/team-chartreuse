@@ -1,8 +1,8 @@
-# Team xxxx
+# Team chartreuse
 
 ## Team Members
 
-- xxxx
+- Rafy
 
 ## How to Initialize and Run the App
 
