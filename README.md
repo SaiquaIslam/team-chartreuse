@@ -6,6 +6,12 @@
 - Sajal Das Shovon (shovon030cse.kuet@gmail.com)
 - Saiqua Islam
 
+- Rafy (mrafy@memphis.edu)
+- Tanvir Ahmed Joy (taj.joy@gmail.com)
+-  Sajal Das Shovon (shovon030cse.kuet@gmail.com)
+- Saiqua Islam (sislam8@memphis.edu)
+
+
 
 ## How to Initialize and Run the App
 
