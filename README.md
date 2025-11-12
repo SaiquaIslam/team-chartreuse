@@ -2,7 +2,11 @@
 
 ## Team Members
 
+- Tanvir Ahmed Joy
+- Sajal Das Shovon (shovon030cse.kuet@gmail.com)
+- Saiqua Islam
 
+- Rafy (mrafy@memphis.edu)
 - Tanvir Ahmed Joy (taj.joy@gmail.com)
 - Rafy
 -  Sajal Das Shovon (shovon030cse.kuet@gmail.com)
