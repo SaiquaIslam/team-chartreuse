@@ -6,6 +6,7 @@
 - Sajal Das Shovon (shovon030cse.kuet@gmail.com)
 - Saiqua Islam
 
+
 ## How to Initialize and Run the App
 
 ### Prerequisites
