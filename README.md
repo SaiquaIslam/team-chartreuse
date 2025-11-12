@@ -1,8 +1,8 @@
-# Team xxxx
+# Team chartreuse
 
 ## Team Members
 
-- xxxx
+- Tanvir Ahmed Joy
 
 ## How to Initialize and Run the App
 
