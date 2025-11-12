@@ -1,8 +1,8 @@
-# Team xxxx
+# Team Chartreuse
 
 ## Team Members
 
-- xxxx
+- Saiqua Islam
 
 ## How to Initialize and Run the App
 
