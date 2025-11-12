@@ -2,8 +2,12 @@
 
 ## Team Members
 
+
 - Tanvir Ahmed Joy (taj.joy@gmail.com)
+- Rafy
+-  Sajal Das Shovon
 - Saiqua Islam
+
 
 ## How to Initialize and Run the App
 
