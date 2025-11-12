@@ -2,7 +2,7 @@
 
 ## Team Members
 
-- Rafy
+- Rafy (mrafy@memphis.edu)
 
 ## How to Initialize and Run the App
 
