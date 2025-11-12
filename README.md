@@ -3,9 +3,8 @@
 ## Team Members
 
 
-
+- Tanvir Ahmed Joy (taj.joy@gmail.com)
 - Rafy
-- Tanvir Ahmed Joy
 -  Sajal Das Shovon
 - Saiqua Islam
 
