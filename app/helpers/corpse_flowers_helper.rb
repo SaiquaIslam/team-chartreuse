@@ -1,0 +1,2 @@
+module CorpseFlowersHelper
+end
