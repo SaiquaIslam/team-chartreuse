@@ -1,0 +1,224 @@
+<div class="d-flex">
+  <!-- LEFT SIDEBAR - Filters (same as browse page) -->
+  <div class="sidebar bg-light border-end" style="width: 220px; min-height: calc(100vh - 56px); padding: 20px;">
+    <h5 class="mb-4">Filters</h5>
+    
+    <!-- Size Filter -->
+    <div class="mb-4">
+      <h6 class="mb-3">Size</h6>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Small (2-4ft)</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Medium (5-7ft)</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Large (8-10ft)</label>
+      </div>
+    </div>
+
+    <!-- Putridity Filter -->
+    <div class="mb-4">
+      <h6 class="mb-3">Putridity</h6>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Mild</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Moderate</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Strong</label>
+      </div>
+    </div>
+
+    <!-- Color Filter -->
+    <div class="mb-4">
+      <h6 class="mb-3">Color</h6>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Light</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Medium</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">Dark</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="flex-grow-1" style="padding: 20px 40px;">
+    
+    <!-- Back Button -->
+    <div class="mb-3">
+      <%= link_to "← Back to Browse", corpse_flowers_path, class: "btn btn-outline-secondary btn-sm" %>
+    </div>
+
+    <div class="row">
+      <!-- LEFT: Selected Flower Card (Highlighted) -->
+      <div class="col-md-4">
+        <div class="card shadow-sm" style="background-color: #e8f5e9; border: 2px solid #28a745;">
+          <!-- Flower Image -->
+          <div class="card-img-top bg-white" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+            <% if @corpse_flower.images.attached? && @corpse_flower.images.first.present? %>
+              <%= image_tag @corpse_flower.images.first, class: "img-fluid", style: "max-height: 180px; object-fit: contain;" %>
+            <% else %>
+              <!-- Placeholder with X -->
+              <svg width="180" height="180" style="border: 2px solid #dee2e6;">
+                <line x1="0" y1="0" x2="180" y2="180" stroke="#dee2e6" stroke-width="2"/>
+                <line x1="180" y1="0" x2="0" y2="180" stroke="#dee2e6" stroke-width="2"/>
+              </svg>
+            <% end %>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+            <h5 class="card-title mb-2"><%= @corpse_flower.name %></h5>
+            <p class="text-muted small mb-2">
+              <%= @corpse_flower.size_display %> · <%= @corpse_flower.putridity ? "#{@corpse_flower.putridity}/10" : "N/A" %>
+            </p>
+            <p class="fw-bold mb-0" style="color: #28a745; font-size: 1.25rem;">
+              <%= @corpse_flower.formatted_price %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Detail Information Panel -->
+      <div class="col-md-8">
+        <div class="card shadow-sm h-100">
+          <div class="card-body" style="padding: 40px;">
+            <!-- Flower Name -->
+            <h2 class="mb-4" style="color: #28a745; font-weight: bold;">
+              <%= @corpse_flower.name %>
+            </h2>
+
+            <!-- Price -->
+            <h3 class="mb-4" style="color: #28a745;">
+              <%= @corpse_flower.formatted_price %>
+            </h3>
+
+            <!-- Details -->
+            <div class="mb-4">
+              <!-- Size -->
+              <div class="mb-3">
+                <strong>Size:</strong> 
+                <span class="ms-2"><%= @corpse_flower.size_display %></span>
+              </div>
+
+              <!-- Putridity with Dots -->
+              <div class="mb-3">
+                <strong>Putridity:</strong> 
+                <span class="ms-2">
+                  <% if @corpse_flower.putridity %>
+                    <%= @corpse_flower.putridity %>/10
+                    <span class="ms-2">
+                      <% putridity_level = @corpse_flower.putridity %>
+                      <% if putridity_level <= 3 %>
+                        ●○○
+                      <% elsif putridity_level <= 6 %>
+                        ●●○
+                      <% else %>
+                        ●●●
+                      <% end %>
+                    </span>
+                  <% else %>
+                    N/A
+                  <% end %>
+                </span>
+              </div>
+
+              <!-- Color -->
+              <% if @corpse_flower.color.present? %>
+                <div class="mb-3">
+                  <strong>Color:</strong> 
+                  <span class="ms-2"><%= @corpse_flower.color.capitalize %></span>
+                </div>
+              <% end %>
+
+              <!-- Stock -->
+              <div class="mb-3">
+                <strong>Stock:</strong> 
+                <span class="ms-2">
+                  <% if @corpse_flower.in_stock? %>
+                    <span class="text-success"><%= @corpse_flower.stock %> available</span>
+                  <% else %>
+                    <span class="text-danger">Out of stock</span>
+                  <% end %>
+                </span>
+              </div>
+            </div>
+
+            <!-- Description (if available) -->
+            <% if @corpse_flower.description.present? %>
+              <div class="mb-4">
+                <strong>Description:</strong>
+                <p class="mt-2 text-muted"><%= simple_format(@corpse_flower.description) %></p>
+              </div>
+            <% end %>
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2">
+              <% if @corpse_flower.in_stock? %>
+                <button class="btn btn-lg" style="background-color: #28a745; color: white;" disabled>
+                  Add to Cart
+                </button>
+                <small class="text-muted text-center">
+                  (Cart functionality coming in PR2)
+                </small>
+              <% else %>
+                <button class="btn btn-secondary btn-lg" disabled>
+                  Out of Stock
+                </button>
+              <% end %>
+              
+              <button class="btn btn-secondary btn-lg" disabled>
+                Reviews
+              </button>
+              <small class="text-muted text-center">
+                (Reviews coming in PR2 - Rafy)
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Images Gallery (if multiple images) -->
+    <% if @corpse_flower.images.attached? && @corpse_flower.images.count > 1 %>
+      <div class="row mt-4">
+        <div class="col-12">
+          <h5 class="mb-3">More Images</h5>
+          <div class="row g-3">
+            <% @corpse_flower.images.each_with_index do |image, index| %>
+              <% next if index == 0 %> <!-- Skip first image as it's shown above -->
+              <div class="col-md-2">
+                <%= image_tag image, class: "img-thumbnail", style: "height: 120px; object-fit: cover; width: 100%;" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .sidebar h6 {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .form-check-label {
+    font-size: 0.9rem;
+  }
+</style>

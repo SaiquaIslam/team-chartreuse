@@ -1,0 +1,178 @@
+<div class="d-flex">
+  <!-- LEFT SIDEBAR - Filters -->
+  <div class="sidebar bg-light border-end" style="width: 220px; min-height: calc(100vh - 56px); padding: 20px;">
+    <h5 class="mb-4">Filters</h5>
+    
+    <!-- Size Filter (US04 - Coming in PR2) -->
+    <div class="mb-4">
+      <h6 class="mb-3">Size</h6>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Small (2-4ft)
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Medium (5-7ft)
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Large (8-10ft)
+        </label>
+      </div>
+    </div>
+
+    <!-- Putridity Filter (US04 - Coming in PR2) -->
+    <div class="mb-4">
+      <h6 class="mb-3">Putridity</h6>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Mild
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Moderate
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Strong
+        </label>
+      </div>
+    </div>
+
+    <!-- Color Filter (US04 - Coming in PR2) -->
+    <div class="mb-4">
+      <h6 class="mb-3">Color</h6>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Light
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Medium
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" disabled>
+        <label class="form-check-label text-muted">
+          Dark
+        </label>
+      </div>
+    </div>
+
+    <small class="text-muted d-block mt-3">
+      <em>Filters coming in PR2</em>
+    </small>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="flex-grow-1" style="padding: 20px 40px;">
+    
+    <!-- Sort By Dropdown (US05 - Coming in PR2) -->
+    <div class="d-flex justify-content-end mb-3">
+      <div class="d-flex align-items-center">
+        <label class="me-2 mb-0">Sort By</label>
+        <select class="form-select" style="width: 200px;" disabled>
+          <option>Price : Low to High</option>
+          <option>Price : High to Low</option>
+          <option>Size : Small to Large</option>
+          <option>Size : Large to Small</option>
+          <option>Putridity : Low to High</option>
+          <option>Putridity : High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Search Results Info -->
+    <% if params[:search].present? %>
+      <div class="alert alert-info mb-3">
+        Showing results for: <strong>"<%= params[:search] %>"</strong>
+        (<%= @corpse_flowers.count %> found)
+        <%= link_to "Clear search", corpse_flowers_path, class: "btn btn-sm btn-outline-secondary ms-2" %>
+      </div>
+    <% end %>
+
+    <!-- Flowers Grid (2 columns) -->
+    <div class="row g-4">
+      <% if @corpse_flowers.any? %>
+        <% @corpse_flowers.each do |flower| %>
+          <div class="col-md-6">
+            <%= link_to corpse_flower_path(flower), class: "text-decoration-none" do %>
+              <div class="card h-100 shadow-sm flower-card">
+                <!-- Flower Image -->
+                <div class="card-img-top bg-white border-bottom" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                  <% if flower.images.attached? && flower.images.first.present? %>
+                    <%= image_tag flower.images.first, class: "img-fluid", style: "max-height: 180px; object-fit: contain;" %>
+                  <% else %>
+                    <!-- Placeholder with X -->
+                    <svg width="180" height="180" style="border: 2px solid #dee2e6;">
+                      <line x1="0" y1="0" x2="180" y2="180" stroke="#dee2e6" stroke-width="2"/>
+                      <line x1="180" y1="0" x2="0" y2="180" stroke="#dee2e6" stroke-width="2"/>
+                    </svg>
+                  <% end %>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body">
+                  <h5 class="card-title mb-2"><%= flower.name %></h5>
+                  <p class="text-muted small mb-2">
+                    <%= flower.size_display %> · <%= flower.putridity ? "#{flower.putridity}/10" : "N/A" %>
+                  </p>
+                  <p class="fw-bold mb-0" style="color: #28a745; font-size: 1.25rem;">
+                    <%= flower.formatted_price %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <!-- No Flowers Found -->
+        <div class="col-12">
+          <div class="alert alert-warning text-center">
+            <h4>No flowers found</h4>
+            <% if params[:search].present? %>
+              <p>Try adjusting your search term.</p>
+              <%= link_to "View all flowers", corpse_flowers_path, class: "btn btn-primary" %>
+            <% else %>
+              <p>No corpse flowers available at the moment. Check back soon!</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .flower-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .flower-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  }
+
+  .sidebar h6 {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .form-check-label {
+    font-size: 0.9rem;
+  }
+</style>
