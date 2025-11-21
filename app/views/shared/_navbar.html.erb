@@ -24,6 +24,13 @@
 
       <!-- RIGHT Navigation Links -->
       <ul class="navbar-nav ms-auto">
+
+      <li class="nav-item">
+          <%= link_to "Listing",
+            admin_corpse_flowers_path,
+            class: "nav-link text-white #{'fw-bold' if current_page?(admin_corpse_flowers_path)}" %>
+        </li>
+
         <li class="nav-item">
           <%= link_to "Browse", corpse_flowers_path, class: "nav-link text-white #{'fw-bold' if current_page?(corpse_flowers_path)}" %>
         </li>

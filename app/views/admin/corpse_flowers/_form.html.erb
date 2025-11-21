@@ -1,0 +1,96 @@
+<%= form_with model: corpse_flower,
+              url: corpse_flower.persisted? ?
+                   admin_corpse_flower_path(corpse_flower) :
+                   admin_corpse_flowers_path,
+              local: true do |form| %>
+
+  <% if corpse_flower.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(corpse_flower.errors.count, "error") %> prevented saving:</h5>
+      <ul>
+        <% corpse_flower.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card p-4 shadow-sm">
+
+    <!-- Two Column Layout -->
+    <div class="row">
+      
+      <!-- LEFT COLUMN -->
+      <div class="col-md-6">
+
+        <div class="mb-3">
+          <%= form.label :name, class: "form-label fw-bold" %>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :description, class: "form-label fw-bold" %>
+          <%= form.text_area :description, class: "form-control", rows: 6 %>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-md-6">
+
+        <div class="mb-3">
+          <%= form.label :images, "Image", class: "form-label fw-bold" %>
+          <%= form.file_field :images, multiple: true, accept: "image/*", class: "form-control" %>
+        </div>
+
+        <% if corpse_flower.images.attached? %>
+          <label class="form-label fw-bold">Current Images</label>
+          <div class="d-flex flex-wrap gap-3 mb-3">
+            <% corpse_flower.images.each do |img| %>
+              <%= image_tag img.variant(resize_to_limit: [120, 120]),
+                            class: "img-thumbnail" %>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Fields -->
+    <div class="row mt-3">
+      <div class="col-md-4 mb-3">
+        <%= form.label :price, class: "form-label fw-bold" %>
+        <%= form.number_field :price, step: 0.01, class: "form-control" %>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <%= form.label :stock, class: "form-label fw-bold" %>
+        <%= form.number_field :stock, class: "form-control" %>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <%= form.label :size, class: "form-label fw-bold" %>
+        <%= form.select :size, [["Small", "small"], ["Medium", "medium"], ["Large", "large"]],
+                        {}, class: "form-select" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <%= form.label :color, class: "form-label fw-bold" %>
+        <%= form.text_field :color, class: "form-control" %>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <%= form.label :putridity, class: "form-label fw-bold" %>
+        <%= form.number_field :putridity, in: 1..10, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- BUTTON -->
+    <%= form.submit corpse_flower.persisted? ? "Update Flower" : "Save Flower",
+                    class: "btn btn-primary mt-3 px-4 py-2" %>
+
+  </div>
+<% end %>
