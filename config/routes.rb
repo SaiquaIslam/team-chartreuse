@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   devise_for :users
   
@@ -11,4 +9,17 @@ Rails.application.routes.draw do
 
   # Corpse Flowers routes (US01, US02, US03)
   resources :corpse_flowers, only: [:index, :show]
+
+  # Admin routes
+namespace :admin do
+  resources :corpse_flowers do
+    member do
+      patch :increase_stock
+      patch :decrease_stock
+    end
+  end
+end
+
+
+
 end

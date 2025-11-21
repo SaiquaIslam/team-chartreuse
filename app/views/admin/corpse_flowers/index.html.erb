@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-end mb-3">
+  <%= link_to "Add Flower",
+      new_admin_corpse_flower_path,
+      class: "btn btn-success px-4 py-2" %>
+</div>
+
+
+
+<div class="container mt-5">
+  <h1 class="mb-4 fw-bold">Flower Listings (Admin)</h1>
+
+  <table class="table table-striped table-hover shadow-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th class="text-end">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @corpse_flowers.each do |flower| %>
+        <tr>
+          <td><%= flower.name %></td>
+          <td><%= number_to_currency(flower.price || 0) %></td>
+
+
+<td>
+  <div class="d-flex align-items-center gap-2">
+
+    <!-- Decrease stock -->
+    <%= button_to "-", 
+        decrease_stock_admin_corpse_flower_path(flower),
+        method: :patch,
+        class: "btn btn-sm btn-outline-danger px-3",
+        disabled: flower.stock == 0 %>
+
+    <!-- Stock number -->
+    <span class="fw-bold fs-5"><%= flower.stock %></span>
+
+    <!-- Increase stock -->
+    <%= button_to "+", 
+        increase_stock_admin_corpse_flower_path(flower),
+        method: :patch,
+        class: "btn btn-sm btn-outline-success px-3" %>
+
+  </div>
+</td>
+
+
+       <td><%= flower.status_badge %></td>
+
+
+
+          <td class="text-end">
+<%= link_to "Edit",
+            edit_admin_corpse_flower_path(flower),
+            class: "btn btn-sm btn-warning me-1" %>
+
+<%= link_to "Delete",
+            admin_corpse_flower_path(flower),
+            data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+            class: "btn btn-sm btn-danger" %>
+
+
+          </td>
+        </tr>
+      <% end %>
+
+      <% if @corpse_flowers.empty? %>
+        <tr>
+          <td colspan="5" class="text-center text-muted py-4">
+            No flowers found.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
