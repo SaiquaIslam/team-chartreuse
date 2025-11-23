@@ -67,18 +67,4 @@ class CorpseFlower < ApplicationRecord
   def putridity_display
     putridity ? "#{putridity}/10" : "N/A"
   end
-
-  
-def status_badge
-  if stock == 0
-    "<span class='badge bg-danger'>Sold Out</span>".html_safe
-  elsif stock < 5
-    "<span class='badge bg-warning text-dark'>Low Stock</span>".html_safe
-  else
-    "<span class='badge bg-success'>In Stock</span>".html_safe
-  end
-end
-
-
-
 end
