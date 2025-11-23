@@ -2,15 +2,10 @@
 
 ## Team Members
 
-- Tanvir Ahmed Joy
-- Sajal Das Shovon (shovon030cse.kuet@gmail.com)
-- Saiqua Islam
-
-- Rafy (mrafy@memphis.edu)
 - Tanvir Ahmed Joy (taj.joy@gmail.com)
-- Rafy
--  Sajal Das Shovon (shovon030cse.kuet@gmail.com)
-- Saiqua Islam
+- Sajal Das Shovon (shovon030cse.kuet@gmail.com)
+- Rafy (mrafy@memphis.edu)
+- Saiqua Islam (saquia118@gmail.com)
 
 
 ## How to Initialize and Run the App
