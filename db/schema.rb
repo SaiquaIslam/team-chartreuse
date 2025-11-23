@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_19_021343) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_21_202435) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,22 +40,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_19_021343) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "corpse_flowers", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.decimal "price", precision: 10, scale: 2, null: false
-    t.string "size"
-    t.integer "putridity"
-    t.string "color"
-    t.integer "stock", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_corpse_flowers_on_name"
-    t.index ["price"], name: "index_corpse_flowers_on_price"
-    t.index ["putridity"], name: "index_corpse_flowers_on_putridity"
-    t.index ["size"], name: "index_corpse_flowers_on_size"
   end
 
   create_table "users", force: :cascade do |t|
