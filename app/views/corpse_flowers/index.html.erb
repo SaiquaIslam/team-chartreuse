@@ -1,0 +1,94 @@
+<div class="browse-page mt-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="filters-sidebar">
+        <h5>Filters</h5>
+        
+        <div class="filter-section">
+          <h6>Size</h6>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="sizeSmall" disabled>
+            <label class="form-check-label" for="sizeSmall">Small (2-4ft)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="sizeMedium" disabled>
+            <label class="form-check-label" for="sizeMedium">Medium (5-7ft)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="sizeLarge" disabled>
+            <label class="form-check-label" for="sizeLarge">Large (8-10ft)</label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h6>Putridity</h6>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="putridityMild" disabled>
+            <label class="form-check-label" for="putridityMild">Mild</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="putridityModerate" disabled>
+            <label class="form-check-label" for="putridityModerate">Moderate</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="putridityStrong" disabled>
+            <label class="form-check-label" for="putridityStrong">Strong</label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h6>Color</h6>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="colorLight" disabled>
+            <label class="form-check-label" for="colorLight">Light</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="colorMedium" disabled>
+            <label class="form-check-label" for="colorMedium">Medium</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="colorDark" disabled>
+            <label class="form-check-label" for="colorDark">Dark</label>
+          </div>
+        </div>
+
+        <small class="text-muted d-block mt-3"><em>Filters coming in M2</em></small>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="d-flex justify-content-end align-items-center mb-3">
+        <label for="sortSelect" class="me-2 mb-0">Sort by</label>
+        <select class="form-select" id="sortSelect" style="width: auto;" disabled>
+          <option>Price: Low to High</option>
+        </select>
+      </div>
+
+      <% if @corpse_flowers.any? %>
+        <div class="row row-cols-1 row-cols-lg-2 g-4">
+          <% @corpse_flowers.each do |flower| %>
+            <div class="col">
+              <div class="card flower-card">
+                <%= link_to corpse_flower_path(flower) do %>
+                  <img src="<%= flower.image_url %>" 
+                       alt="<%= flower.name %>"
+                       style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                <% end %>
+
+                <div class="card-body">
+                  <%= link_to flower.name, corpse_flower_path(flower), class: "flower-name d-block mb-2" %>
+                  <p class="flower-attributes mb-2"><%= flower.size %> - <%= flower.putridity %></p>
+                  <h5 class="flower-price"><%= flower.display_price %></h5>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <h4 class="text-muted">No flowers available</h4>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
