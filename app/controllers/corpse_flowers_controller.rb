@@ -2,7 +2,9 @@
 
 class CorpseFlowersController < ApplicationController
   def index
-    @corpse_flowers = CorpseFlower.all.order(created_at: :desc)
+    @corpse_flowers = CorpseFlower.all
+    @corpse_flowers = @corpse_flowers.search(params[:search]) if params[:search].present?
+    @corpse_flowers = @corpse_flowers.order(created_at: :desc)
   end
 
   def show

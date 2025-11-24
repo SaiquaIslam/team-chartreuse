@@ -7,9 +7,9 @@
     </button>
     
     <div class="collapse navbar-collapse" id="navbarNav">
-      <form class="d-flex mx-auto" style="width: 400px;">
-        <input class="form-control" type="search" placeholder="Search flowers..." disabled style="border-radius: 20px; background-color: white;">
-      </form>
+      <%= form_with(url: corpse_flowers_path, method: :get, class: "d-flex mx-auto", style: "width: 400px;") do %>
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search flowers...", style: "border-radius: 20px;" %>
+      <% end %>
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
