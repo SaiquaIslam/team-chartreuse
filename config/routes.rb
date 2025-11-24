@@ -7,9 +7,17 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   
-    # Corpse Flowers - PR1 (Tanvir)
+  # Corpse Flowers - PR1 (Tanvir)
   resources :corpse_flowers, only: [:index, :show]
   #root "new_hunt_registration"
+
+  # Checkout - PR1 (Rafy) - Shipping (US10)
+  namespace :checkout do
+    get  'shipping', to: 'shippings#new'
+    post 'shipping', to: 'shippings#create'
+  end
+
+  root "corpse_flowers#index"
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   get  "hunt_registration/new", to: "hunt_registration#new",   as: "new_hunt_registration"
