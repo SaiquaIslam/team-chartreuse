@@ -1,1 +1,98 @@
-<%= link_to "Proceed to Checkout", checkout_shipping_path, class: "btn btn-primary" %>
+<div class="container mt-4">
+  <h2 class="mb-4">Shopping Cart</h2>
+
+  <% if @cart_items.any? %>
+    <div class="row">
+      <!-- Cart Items -->
+      <div class="col-md-8">
+        <% @cart_items.each do |item| %>
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <!-- Flower Image -->
+                <div class="col-md-2">
+                  <%= image_tag item.corpse_flower.image_url, 
+                                alt: item.corpse_flower.name,
+                                style: "width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" %>
+                </div>
+
+                <!-- Flower Details -->
+                <div class="col-md-5">
+                  <h6 class="mb-1">
+                    <%= link_to item.corpse_flower.name, corpse_flower_path(item.corpse_flower), 
+                                style: "text-decoration: none; color: #333;" %>
+                  </h6>
+                  <small class="text-muted">
+                    <%= item.corpse_flower.size %> - <%= item.corpse_flower.putridity %>
+                  </small>
+                  <div class="mt-2">
+                    <strong style="color: #3d7e3d;"><%= item.corpse_flower.display_price %></strong>
+                  </div>
+                </div>
+
+                <!-- Quantity Controls (US09 - Coming later) -->
+                <div class="col-md-3">
+                  <div class="input-group input-group-sm" style="width: 120px;">
+                    <button class="btn btn-outline-secondary" type="button" disabled>-</button>
+                    <input type="text" class="form-control text-center" value="<%= item.quantity %>" readonly>
+                    <button class="btn btn-outline-secondary" type="button" disabled>+</button>
+                  </div>
+                </div>
+
+                <!-- Remove Button (US08 - Coming later) -->
+                <div class="col-md-2 text-end">
+                  <button class="btn btn-sm btn-outline-danger" disabled title="Remove item (Coming later)">
+                    <i class="bi bi-trash"></i> 🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header" style="background-color: #3d7e3d; color: white;">
+            <h5 class="mb-0">Order Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span><strong><%= sprintf('$%.2f', @cart.total_price) %></strong></span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Shipping:</span>
+              <span><strong>$0.00</strong></span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <strong>Total:</strong>
+              <strong style="color: #3d7e3d; font-size: 1.2em;">
+                <%= sprintf('$%.2f', @cart.total_price) %>
+              </strong>
+            </div>
+            
+            <%= link_to 'Proceed to Checkout', checkout_shipping_path, 
+            class: 'btn btn-success w-100 mb-2',
+            style: 'background-color: #3d7e3d; border-color: #3d7e3d;' %>
+            
+            <%= link_to 'Continue Shopping', corpse_flowers_path, 
+                        class: 'btn btn-outline-secondary w-100' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <% else %>
+    <!-- Empty Cart -->
+    <div class="text-center py-5">
+      <h4 class="text-muted mb-3">Your cart is empty</h4>
+      <p class="text-muted mb-4">Add some beautiful corpse flowers to your cart!</p>
+      <%= link_to 'Browse Flowers', corpse_flowers_path, 
+                  class: 'btn btn-success',
+                  style: 'background-color: #3d7e3d; border-color: #3d7e3d;' %>
+    </div>
+  <% end %>
+</div>

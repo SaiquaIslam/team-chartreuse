@@ -22,7 +22,14 @@
           <a class="nav-link" href="#">Account</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Cart (0)</a>
+          <%= link_to cart_path, class: 'nav-link' do %>
+            Cart 
+            <% if user_signed_in? && current_user.cart&.total_items&.positive? %>
+              <span class="badge bg-light text-dark"><%= current_user.cart.total_items %></span>
+            <% else %>
+              (0)
+            <% end %>
+          <% end %>
         </li>
 
 

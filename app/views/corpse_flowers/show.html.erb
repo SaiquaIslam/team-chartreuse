@@ -43,9 +43,16 @@
 
       <div class="mb-3">
         <% if @corpse_flower.available? %>
-          <button class="btn btn-success btn-lg mb-2" disabled style="background-color: #3d7e3d; border-color: #3d7e3d;">
-            Add to Cart
-          </button>
+          <% if user_signed_in? %>
+            <%= button_to 'Add to Cart', cart_items_path(corpse_flower_id: @corpse_flower.id), 
+                          method: :post, 
+                          class: 'btn btn-success btn-lg mb-2',
+                          style: 'background-color: #3d7e3d; border-color: #3d7e3d;' %>
+          <% else %>
+            <%= link_to 'Sign In to Add to Cart', new_user_session_path, 
+                        class: 'btn btn-success btn-lg mb-2',
+                        style: 'background-color: #3d7e3d; border-color: #3d7e3d;' %>
+          <% end %>
         <% else %>
           <button class="btn btn-secondary btn-lg mb-2" disabled>
             Out of Stock
@@ -53,7 +60,7 @@
         <% end %>
         <br>
         <button class="btn btn-secondary btn-lg" disabled>
-          Review
+          Review <small>(Coming later)</small>
         </button>
       </div>
 

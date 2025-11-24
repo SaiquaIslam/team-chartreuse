@@ -1,17 +1,23 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Devise Authentication (Sajal PR1)
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  
-  # Corpse Flowers - PR1 (Tanvir)
+  # Root route - Browse page
+  root "corpse_flowers#index"
+
+  # Health check
+  get 'up' => 'rails/health#show', as: :rails_health_check
+
+  # Corpse Flowers - Browse & Search (Tanvir PR1, PR2)
   resources :corpse_flowers, only: [:index, :show]
-  #root "new_hunt_registration"
 
-  # Checkout - PR1 (Rafy) - Shipping (US10)
+  # Cart System (Tanvir PR3)
+  resource :cart, only: [:show]
+  resources :cart_items, only: [:create]
+
+  # Checkout (Rafy PR1, PR2)
   namespace :checkout do
     get  'shipping', to: 'shippings#new'
     post 'shipping', to: 'shippings#create'
@@ -19,14 +25,7 @@ Rails.application.routes.draw do
     post 'payment', to: 'payments#create'
   end
 
-  root "corpse_flowers#index"
-  get 'up' => 'rails/health#show', as: :rails_health_check
-
-  get  "hunt_registration/new", to: "hunt_registration#new",   as: "new_hunt_registration"
+  # Hunt Registration (Saiqua)
+  get  "hunt_registration/new", to: "hunt_registration#new",    as: "new_hunt_registration"
   post "hunt_registration",     to: "hunt_registration#create", as: "hunt_registrations"
-
-   
-  root "hunt_registration#new"
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
