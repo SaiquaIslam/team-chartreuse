@@ -1,0 +1,32 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: hunt_registrations
+#
+#  id                   :bigint           not null, primary key
+#  instructions         :text
+#  latitude             :decimal(, )
+#  location_description :string
+#  longitude            :decimal(, )
+#  nickname             :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
+one:
+  user: one
+  order_item: one
+  nickname: MyString
+  location_description: MyString
+  latitude: 9.99
+  longitude: 9.99
+  instructions: MyText
+
+two:
+  user: two
+  order_item: two
+  nickname: MyString
+  location_description: MyString
+  latitude: 9.99
+  longitude: 9.99
+  instructions: MyText

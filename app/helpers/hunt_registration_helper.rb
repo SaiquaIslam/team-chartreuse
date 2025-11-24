@@ -1,0 +1,2 @@
+module HuntRegistrationHelper
+end
