@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   namespace :checkout do
     get  'shipping', to: 'shippings#new'
     post 'shipping', to: 'shippings#create'
+    get  'payment', to: 'payments#new'
+    post 'payment', to: 'payments#create'
   end
 
   root "corpse_flowers#index"
