@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: corpse_flowers
+#
+#  id          :bigint           not null, primary key
+#  color       :string
+#  description :text
+#  image_url   :string
+#  name        :string           not null
+#  price       :decimal(10, 2)   not null
+#  putridity   :string
+#  size        :string
+#  status      :string           default("available")
+#  stock       :integer          default(0), not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_corpse_flowers_on_name    (name)
+#  index_corpse_flowers_on_status  (status)
+#
+class CorpseFlower < ApplicationRecord
+  validates :name, presence: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :stock, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :status, inclusion: { in: %w[available sold_out] }
+  
+  scope :available, -> { where(status: 'available') }
+  scope :in_stock, -> { where('stock > ?', 0) }
+  
+  def available?
+    status == 'available' && stock.positive?
+  end
+  
+  def sold_out?
+    stock.zero? || status == 'sold_out'
+  end
+  
+  def display_price
+  "$#{sprintf('%.2f', price)}"
+  end
+end

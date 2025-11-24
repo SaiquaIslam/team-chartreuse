@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-5">
+      <img src="<%= @corpse_flower.image_url %>" 
+           alt="<%= @corpse_flower.name %>"
+           style="width: 100%; height: 400px; object-fit: cover; display: block; border: 2px solid #ddd;">
+    </div>
+
+    <div class="col-md-7">
+      <h2 class="mb-3"><%= @corpse_flower.name %></h2>
+
+      <h3 class="mb-4" style="color: #28a745; font-weight: 700;"><%= @corpse_flower.display_price %></h3>
+
+      <div class="mb-3">
+        <p class="mb-2"><strong>Size:</strong> <%= @corpse_flower.size %></p>
+        
+        <p class="mb-2">
+          <strong>Putridity:</strong> <%= @corpse_flower.putridity %>
+          <span style="color: #666;">
+            <% if @corpse_flower.putridity == "Mild" %>
+              ●
+            <% elsif @corpse_flower.putridity == "Moderate" %>
+              ●●
+            <% elsif @corpse_flower.putridity == "Strong" %>
+              ●●●
+            <% elsif @corpse_flower.putridity == "Overwhelming" %>
+              ●●●●
+            <% end %>
+          </span>
+        </p>
+        
+        <p class="mb-2"><strong>Color:</strong> <%= @corpse_flower.color %></p>
+        
+        <p class="mb-4">
+          <strong>Stock:</strong> 
+          <% if @corpse_flower.stock > 0 %>
+            <%= @corpse_flower.stock %> available
+          <% else %>
+            <span style="color: #dc3545;">Out of stock</span>
+          <% end %>
+        </p>
+      </div>
+
+      <div class="mb-3">
+        <% if @corpse_flower.available? %>
+          <button class="btn btn-success btn-lg mb-2" disabled style="background-color: #3d7e3d; border-color: #3d7e3d;">
+            Add to Cart
+          </button>
+        <% else %>
+          <button class="btn btn-secondary btn-lg mb-2" disabled>
+            Out of Stock
+          </button>
+        <% end %>
+        <br>
+        <button class="btn btn-secondary btn-lg" disabled>
+          Review
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <%= link_to '← Back to Browse', corpse_flowers_path, class: 'text-decoration-none', style: 'color: #0066cc;' %>
+      </div>
+    </div>
+  </div>
+</div>
