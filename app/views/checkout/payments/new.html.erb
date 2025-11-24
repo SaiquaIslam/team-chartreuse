@@ -1,0 +1,51 @@
+<div class="checkout-page">
+  <div class="checkout-form">
+    <h1>Payment Information</h1>
+
+    <%= form_with url: checkout_payment_path, method: :post, scope: :payment do |f| %>
+
+      <div class="form-group">
+        <%= f.label :card_number, "Card Number" %>
+        <%= f.text_field :card_number,
+              value: @payment.try(:card_number),
+              class: "form-control" %>
+      </div>
+
+      <div class="form-group-inline">
+        <div class="form-group small">
+          <%= f.label :expiry_month, "Expiry Month" %>
+          <%= f.number_field :expiry_month,
+                value: @payment.try(:expiry_month),
+                class: "form-control" %>
+        </div>
+
+        <div class="form-group small">
+          <%= f.label :expiry_year, "Expiry Year" %>
+          <%= f.number_field :expiry_year,
+                value: @payment.try(:expiry_year),
+                class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :cvv, "CVV" %>
+        <%= f.password_field :cvv,
+              value: @payment.try(:cvv),
+              class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :billing_zip, "Billing ZIP" %>
+        <%= f.text_field :billing_zip,
+              value: @payment.try(:billing_zip),
+              class: "form-control" %>
+      </div>
+
+      <div class="form-actions" style="margin-top: 12px;">
+        <%= f.submit "Continue to Review",
+              class: "btn btn-success checkout-button" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
