@@ -29,6 +29,10 @@ class CorpseFlower < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :stock, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :status, inclusion: { in: %w[available sold_out] }
+
+  # Associations (Tanvir PR3)
+  has_many :cart_items, dependent: :destroy
+  has_many :carts, through: :cart_items
   
   scope :available, -> { where(status: 'available') }
   scope :in_stock, -> { where('stock > ?', 0) }
