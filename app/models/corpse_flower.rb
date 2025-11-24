@@ -22,6 +22,8 @@
 #  index_corpse_flowers_on_name    (name)
 #  index_corpse_flowers_on_status  (status)
 #
+# frozen_string_literal: true
+
 class CorpseFlower < ApplicationRecord
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
@@ -30,6 +32,10 @@ class CorpseFlower < ApplicationRecord
   
   scope :available, -> { where(status: 'available') }
   scope :in_stock, -> { where('stock > ?', 0) }
+  scope :search, ->(term) {
+    where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", 
+          "%#{term.downcase}%", "%#{term.downcase}%") if term.present?
+  }
   
   def available?
     status == 'available' && stock.positive?
@@ -40,6 +46,6 @@ class CorpseFlower < ApplicationRecord
   end
   
   def display_price
-  "$#{sprintf('%.2f', price)}"
+    "$#{sprintf('%.2f', price)}"
   end
 end
