@@ -1,0 +1,57 @@
+<div class="checkout-page">
+  <div class="checkout-form">
+    <h1>Shipping Information</h1>
+
+    <%= form_with url: checkout_shipping_path, method: :post, scope: :shipping do |f| %>
+      <div class="form-group">
+        <%= f.label :shipping_name, "Full Name" %>
+        <%= f.text_field :shipping_name,
+              value: @shipping.try(:shipping_name),
+              class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :shipping_address, "Street Address" %>
+        <%= f.text_field :shipping_address,
+              value: @shipping.try(:shipping_address),
+              class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :shipping_city, "City" %>
+        <%= f.text_field :shipping_city,
+              value: @shipping.try(:shipping_city),
+              class: "form-control" %>
+      </div>
+
+      <div class="form-group-inline">
+        <div class="form-group small">
+          <%= f.label :shipping_state, "State" %>
+          <%= f.text_field :shipping_state,
+                value: @shipping.try(:shipping_state),
+                class: "form-control" %>
+        </div>
+
+        <div class="form-group small">
+          <%= f.label :shipping_zip, "ZIP" %>
+          <%= f.text_field :shipping_zip,
+                value: @shipping.try(:shipping_zip),
+                class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :shipping_phone, "Phone Number" %>
+        <%= f.telephone_field :shipping_phone,
+              value: @shipping.try(:shipping_phone),
+              class: "form-control" %>
+      </div>
+
+      <!-- small gap before the button -->
+      <div class="form-actions" style="margin-top: 12px;">
+        <%= f.submit "Continue to Pay",
+              class: "btn btn-success checkout-button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
