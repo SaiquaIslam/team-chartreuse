@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   
   # Corpse Flowers - PR1 (Tanvir)
   resources :corpse_flowers, only: [:index, :show]
+  #root "new_hunt_registration"
 
   # Checkout - PR1 (Rafy) - Shipping (US10)
   namespace :checkout do
@@ -19,6 +20,11 @@ Rails.application.routes.draw do
   root "corpse_flowers#index"
   get 'up' => 'rails/health#show', as: :rails_health_check
 
+  get  "hunt_registration/new", to: "hunt_registration#new",   as: "new_hunt_registration"
+  post "hunt_registration",     to: "hunt_registration#create", as: "hunt_registrations"
+
+   
+  root "hunt_registration#new"
   # Defines the root path route ("/")
   # root "posts#index"
 end

@@ -1,0 +1,159 @@
+<h1 class="my-4">Join the Stinky Scavenger Hunt</h1>
+
+<%= bootstrap_form_with model: @hunt_registration,
+                        url: hunt_registrations_path,
+                        method: :post,
+                        data: { turbo: false },
+                        html: { id: "hunt-registration-form", multipart: true } do |form| %>
+
+  <!-- STEP 1: Confirm registration (always visible) -->
+  <div id="confirm-step" class="card p-4 mb-4">
+    <h2 class="h5 mb-3">Confirm Registration</h2>
+
+    <p class="text-muted mb-2">
+      In the full app, this section will show your purchased corpse flower,
+      order information, and your account (from purchase data).
+    </p>
+
+    <div class="mb-3">
+      <h3 class="h6 text-muted">Flower Information</h3>
+      <p>Cherry Blossom</p>
+    </div>
+
+    <div class="mb-3">
+      <h3 class="h6 text-muted">Order Information</h3>
+      <p>1234 on 11/24/2025</p>
+    </div>
+
+    <div class="mb-3">
+      <h3 class="h6 text-muted">Owner</h3>
+      <p>John Doe</p>
+    </div>
+
+    <div class="alert alert-info">
+      Please review your information. Click <strong>Confirm Registration</strong>
+      to enter location and hunt details below.
+    </div>
+
+    <button type="button"
+            class="btn btn-success"
+            id="confirm-registration-btn">
+      Confirm Registration
+    </button>
+  </div>
+
+  <!-- STEP 2: Location & hunt details (hidden until confirm is clicked) -->
+  <div id="location-step" class="card p-4 mb-4 d-none">
+    <h2 class="h5 mb-3">Location & Hunt Details</h2>
+
+    <%= form.text_field :nickname,
+                        label: "Nickname for This Flower",
+                        placeholder: "Example: Titan of Midtown",
+                        required: true %>
+
+    <%= form.text_field :location_description,
+                        label: "Address or Place Name",
+                        placeholder: "Example: Shelby Farms Park, Memphis, TN",
+                        required: true %>
+
+<!-- Use My Current Location + Lat/Lng fields -->
+<div class="mb-3">
+  <button type="button"
+          class="btn btn-outline-primary mb-2"
+          id="get-location-btn">
+    Use My Current Location
+  </button>
+
+  <small id="location-preview"
+         class="form-text text-muted d-block">
+    You can enter coordinates manually, or click "Use My Current Location".
+  </small>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <%= form.text_field :latitude,
+                        label: "Latitude",
+                        id: "latitude",
+                        placeholder: "35.149532" %>
+  </div>
+  <div class="col-md-6">
+    <%= form.text_field :longitude,
+                        label: "Longitude",
+                        id: "longitude",
+                        placeholder: "-90.048981" %>
+  </div>
+</div>
+
+
+    <%= form.text_area :instructions,
+                       label: "Visiting Instructions",
+                       rows: 3,
+                       placeholder: "Gate code, parking, how to access, etc.",
+                       required: true %>
+
+    <%= form.file_field :photo,
+                        label: "Photo (optional for now)" %>
+
+
+    <%= form.submit "Save Scavenger",
+                    class: "btn btn-success" %>
+  </div>
+<% end %>
+
+<script>
+  function initHuntRegistration() {
+    const confirmBtn      = document.getElementById("confirm-registration-btn");
+    const locationStep    = document.getElementById("location-step");
+    const getLocationBtn  = document.getElementById("get-location-btn");
+    const latitudeInput   = document.getElementById("latitude");
+    const longitudeInput  = document.getElementById("longitude");
+    const locationPreview = document.getElementById("location-preview");
+
+    // Step 1 → Step 2 reveal
+    if (confirmBtn && locationStep) {
+      confirmBtn.addEventListener("click", function () {
+        locationStep.classList.remove("d-none");
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Registration Confirmed";
+      });
+    }
+
+    // "Use My Current Location" button
+    if (getLocationBtn && latitudeInput && longitudeInput && locationPreview) {
+      getLocationBtn.addEventListener("click", function () {
+        if (!navigator.geolocation) {
+          alert("Geolocation is not supported by this browser.");
+          return;
+        }
+
+        getLocationBtn.disabled = true;
+        getLocationBtn.textContent = "Getting location...";
+
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+
+            latitudeInput.value  = lat;
+            longitudeInput.value = lng;
+
+            locationPreview.textContent =
+              `Location set: ${lat}, ${lng}`;
+
+            getLocationBtn.textContent = "Use My Current Location";
+            getLocationBtn.disabled = false;
+          },
+          function () {
+            alert("Unable to retrieve your location. Please enter the address manually.");
+            getLocationBtn.textContent = "Use My Current Location";
+            getLocationBtn.disabled = false;
+          }
+        );
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", initHuntRegistration);
+  document.addEventListener("turbo:load", initHuntRegistration);
+</script>
