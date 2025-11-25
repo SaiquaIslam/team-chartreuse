@@ -1,0 +1,63 @@
+<div class="checkout-page">
+  <div class="checkout-form">
+    <h1>Review Your Order</h1>
+
+    <% if flash[:alert].present? %>
+      <p style="color: red;"><%= flash[:alert] %></p>
+    <% end %>
+
+    <h2>Shipping Information</h2>
+    <p><strong>Name:</strong> <%= @shipping["shipping_name"] %></p>
+    <p>
+      <strong>Address:</strong>
+      <%= @shipping["shipping_address"] %>,
+      <%= @shipping["shipping_city"] %>,
+      <%= @shipping["shipping_state"] %>,
+      <%= @shipping["shipping_zip"] %>
+    </p>
+    <p><strong>Phone:</strong> <%= @shipping["shipping_phone"] %></p>
+
+    <h2>Items</h2>
+
+    <% if @cart && @cart.respond_to?(:cart_items) && @cart.cart_items.any? %>
+      <table>
+        <thead>
+          <tr>
+            <th>Flower</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% total_cents = 0 %>
+          <% @cart.cart_items.each do |item| %>
+            <% price       = item.corpse_flower&.price || 0 %>
+            <% price_cents = (price.to_f * 100).to_i %>
+            <% subtotal    = price_cents * item.quantity %>
+            <% total_cents += subtotal %>
+            <tr>
+              <td><%= item.corpse_flower.name %></td>
+              <td><%= item.quantity %></td>
+              <td><%= number_to_currency(price_cents / 100.0) %></td>
+              <td><%= number_to_currency(subtotal / 100.0) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <h3>Total: <%= number_to_currency(total_cents / 100.0) %></h3>
+    <% else %>
+      <p>No items in cart.</p>
+    <% end %>
+
+    <!-- Raw HTML form: guaranteed to POST to /checkout/review -->
+    <form action="<%= checkout_review_path %>" method="post" data-turbo="false">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+      <div style="margin-top: 12px;">
+        <button type="submit" class="btn btn-success">Place Order</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="checkout-page">
+  <div class="checkout-form">
+    <h1>Order Confirmation</h1>
+
+    <p>Your order has been placed successfully.</p>
+
+    <p><strong>Order ID:</strong> <%= @order.id %></p>
+    <p><strong>Status:</strong> <%= @order.status %></p>
+    <p><strong>Total:</strong> <%= number_to_currency(@order.total_cents / 100.0) %></p>
+
+    <h2>Shipping Information</h2>
+    <p><%= @order.shipping_name %></p>
+    <p><%= @order.shipping_address %></p>
+    <p><%= @order.shipping_city %>, <%= @order.shipping_state %> <%= @order.shipping_zip %></p>
+    <p><%= @order.shipping_phone %></p>
+
+    <h2>Items</h2>
+    <ul>
+      <% @order.order_items.each do |item| %>
+        <li>
+          <%= item.corpse_flower.name %> × <%= item.quantity %>
+          – <%= number_to_currency(item.price_cents / 100.0) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
