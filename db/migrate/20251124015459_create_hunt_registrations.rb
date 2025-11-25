@@ -1,7 +1,7 @@
 class CreateHuntRegistrations < ActiveRecord::Migration[7.1]
   def change
     create_table :hunt_registrations do |t|
-      # t.references :user, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: true
       # t.references :order_item, null: false, foreign_key: true
       t.string :nickname
       t.string :location_description

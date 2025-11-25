@@ -77,6 +77,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_215938) do
   end
 
   create_table "hunt_registrations", force: :cascade do |t|
+    t.bigint "user_id", null: false
     t.string "nickname"
     t.string "location_description"
     t.decimal "latitude"
@@ -84,6 +85,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_215938) do
     t.text "instructions"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_hunt_registrations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -104,4 +106,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_215938) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "corpse_flowers"
   add_foreign_key "carts", "users"
+  add_foreign_key "hunt_registrations", "users"
 end

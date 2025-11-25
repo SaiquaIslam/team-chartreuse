@@ -26,6 +26,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
     enum role: { customer: 0, admin: 1 }
+  has_many :hunt_registrations, dependent: :destroy
 
     # cart association (Tanvir :PR3)
     has_one :cart, dependent: :destroy

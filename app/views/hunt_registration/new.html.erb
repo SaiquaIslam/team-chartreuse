@@ -25,10 +25,16 @@
       <p>1234 on 11/24/2025</p>
     </div>
 
-    <div class="mb-3">
-      <h3 class="h6 text-muted">Owner</h3>
-      <p>John Doe</p>
-    </div>
+<div class="mb-3">
+  <h3 class="h6 text-muted">Owner</h3>
+
+  <% if user_signed_in? %>
+    <p><strong><%= current_user.email %></strong></p>
+  <% else %>
+    <p class="text-danger">(No user signed in)</p>
+  <% end %>
+</div>
+
 
     <div class="alert alert-info">
       Please review your information. Click <strong>Confirm Registration</strong>

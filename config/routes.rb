@@ -26,6 +26,15 @@ Rails.application.routes.draw do
   end
 
   # Hunt Registration (Saiqua)
+  # Hunt list page (US25)
+  get "hunt", to: "hunt_registration#index", as: :hunt
+
+    # Hunt Register page (US22)
   get  "hunt_registration/new", to: "hunt_registration#new",    as: "new_hunt_registration"
   post "hunt_registration",     to: "hunt_registration#create", as: "hunt_registrations"
+
+   
+  #root "hunt_registration#new"
+  # Defines the root path route ("/")
+  # root "posts#index"
 end
