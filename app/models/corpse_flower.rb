@@ -10,7 +10,7 @@
 #  image_url   :string
 #  name        :string           not null
 #  price       :decimal(10, 2)   not null
-#  putridity   :string
+#  putridity   :integer
 #  size        :string
 #  status      :string           default("available")
 #  stock       :integer          default(0), not null
@@ -29,10 +29,14 @@ class CorpseFlower < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :stock, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :status, inclusion: { in: %w[available sold_out] }
+  validates :size, presence: true, inclusion: { in: %w[small medium large] }
+  validates :putridity, presence: true, numericality: { only_integer: true, in: 1..10 }
+  validates :stock, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # Associations (Tanvir PR3)
   has_many :cart_items, dependent: :destroy
   has_many :carts, through: :cart_items
+  has_many_attached :images
   
   scope :available, -> { where(status: 'available') }
   scope :in_stock, -> { where('stock > ?', 0) }
@@ -40,6 +44,7 @@ class CorpseFlower < ApplicationRecord
     where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", 
           "%#{term.downcase}%", "%#{term.downcase}%") if term.present?
   }
+  
   
   def available?
     status == 'available' && stock.positive?

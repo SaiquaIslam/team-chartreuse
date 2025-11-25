@@ -6,7 +6,7 @@ class CreateCorpseFlowers < ActiveRecord::Migration[7.1]
       t.decimal :price, precision: 10, scale: 2, null: false
       t.string :size
       t.string :color
-      t.string :putridity
+      t.integer :putridity
       t.integer :stock, default: 0, null: false
       t.string :status, default: 'available'
       t.string :image_url
