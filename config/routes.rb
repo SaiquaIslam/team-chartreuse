@@ -21,11 +21,18 @@ Rails.application.routes.draw do
   namespace :checkout do
     get  'shipping', to: 'shippings#new'
     post 'shipping', to: 'shippings#create'
-    get  'payment', to: 'payments#new'
-    post 'payment', to: 'payments#create'
+    get  'payment',  to: 'payments#new'
+    post 'payment',  to: 'payments#create'
   end
 
   # Hunt Registration (Saiqua)
   get  "hunt_registration/new", to: "hunt_registration#new",    as: "new_hunt_registration"
   post "hunt_registration",     to: "hunt_registration#create", as: "hunt_registrations"
+
+  ##################################################################
+  # Admin Routes (Sajal PR2)
+  ##################################################################
+  namespace :admin do
+    resources :corpse_flowers
+  end
 end

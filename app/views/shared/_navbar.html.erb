@@ -1,28 +1,37 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3d7e3d;">
   <div class="container-fluid">
+
     <%= link_to "Chartreuse", root_path, class: "navbar-brand fw-bold" %>
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- Search Bar -->
       <%= form_with(url: corpse_flowers_path, method: :get, class: "d-flex mx-auto", style: "width: 400px;") do %>
         <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search flowers...", style: "border-radius: 20px;" %>
       <% end %>
 
       <ul class="navbar-nav ms-auto">
+
+        <!-- Standard Nav -->
         <li class="nav-item">
           <%= link_to "Browse", corpse_flowers_path, class: "nav-link" %>
         </li>
+
         <li class="nav-item">
           <%= link_to "Hunt", new_hunt_registration_path, class: "nav-link" %>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" href="#">Account</a>
         </li>
+
+        <!-- Cart (Tanvir’s version, preserved) -->
         <li class="nav-item">
-          <%= link_to cart_path, class: 'nav-link' do %>
+          <%= link_to cart_path, class: "nav-link" do %>
             Cart 
             <% if user_signed_in? && current_user.cart&.total_items&.positive? %>
               <span class="badge bg-light text-dark"><%= current_user.cart.total_items %></span>
@@ -32,26 +41,36 @@
           <% end %>
         </li>
 
+        <!-- Admin Listings -->
+        <% if user_signed_in? && current_user.admin? %>
+          <li class="nav-item">
+            <%= link_to "Admin Listings", admin_corpse_flowers_path, class: "nav-link text-white" %>
+          </li>
+        <% end %>
 
+        <!-- Authentication -->
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <span class="nav-link text-white">Hello, <%= current_user.email %></span>
+          </li>
 
-<% if user_signed_in? %>
-  <li class="nav-item">
-    <span class="nav-link text-white">Hello, <%= current_user.email %></span>
-  </li>
-  <li class="nav-item">
-    <%= link_to "Sign Out", destroy_user_session_path, 
-          method: :delete, class: "nav-link text-white" %>
-  </li>
-<% else %>
-  <li class="nav-item">
-    <%= link_to "Sign In", new_user_session_path, class: "nav-link text-white" %>
-  </li>
-  <li class="nav-item">
-    <%= link_to "Sign Up", new_user_registration_path, class: "nav-link text-white" %>
-  </li>
-<% end %>
+          <li class="nav-item">
+            <a href="<%= destroy_user_session_path %>"
+              data-turbo-method="delete"
+              class="nav-link text-white">
+              Sign Out
+            </a>
+          </li>
 
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Sign In", new_user_session_path, class: "nav-link text-white" %>
+          </li>
 
+          <li class="nav-item">
+            <%= link_to "Sign Up", new_user_registration_path, class: "nav-link text-white" %>
+          </li>
+        <% end %>
 
       </ul>
     </div>
