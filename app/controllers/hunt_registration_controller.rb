@@ -1,4 +1,11 @@
 class HuntRegistrationController < ApplicationController
+    before_action :authenticate_user!
+
+      # US25 – Browse all registered hunt flowers
+  def index
+    @hunt_registrations = HuntRegistration.order(created_at: :desc)
+    render :index
+  end
     def new
     @hunt_registration = HuntRegistration.new
     render :new
@@ -6,10 +13,11 @@ class HuntRegistrationController < ApplicationController
 
 def create
   @hunt_registration = HuntRegistration.new(hunt_registration_params)
+  @hunt_registration.user = current_user
 
   if @hunt_registration.save
     flash[:success] = "Registration completed successfully."
-    redirect_to new_hunt_registration_path   # Go back to new page
+    redirect_to hunt_path
   else
     flash.now[:error] = "Unable to save registration."
     render :new_hunt, status: :unprocessable_entity
