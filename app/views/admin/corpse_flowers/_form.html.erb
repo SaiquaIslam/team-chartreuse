@@ -1,0 +1,73 @@
+<%= form_with model: corpse_flower,
+              url: corpse_flower.persisted? ?
+                   admin_corpse_flower_path(corpse_flower) :
+                   admin_corpse_flowers_path,
+              local: true,
+              multipart: true do |form| %>
+
+  <% if corpse_flower.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(corpse_flower.errors.count, "error") %> prevented saving:</h5>
+      <ul>
+        <% corpse_flower.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card p-4 shadow-sm">
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <%= form.label :name, class: "form-label fw-bold" %>
+        <%= form.text_field :name, class: "form-control", required: true %>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <%= form.label :price, class: "form-label fw-bold" %>
+        <%= form.number_field :price, step: 0.01, class: "form-control", required: true %>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :description, class: "form-label fw-bold" %>
+      <%= form.text_area :description, class: "form-control", rows: 3, required: true %>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <%= form.label :size, class: "form-label fw-bold" %>
+        <%= form.select :size,
+              [["Small", "small"], ["Medium", "medium"], ["Large", "large"]],
+              { prompt: "Choose size" },
+              class: "form-select",
+              required: true %>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <%= form.label :color, class: "form-label fw-bold" %>
+        <%= form.text_field :color, class: "form-control", required: true %>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <%= form.label :putridity, "Putridity (1 - 10)", class: "form-label fw-bold" %>
+        <%= form.number_field :putridity, in: 1..10, class: "form-control", required: true %>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :stock, class: "form-label fw-bold" %>
+      <%= form.number_field :stock, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :images, "Upload Images", class: "form-label fw-bold" %>
+      <%= form.file_field :images, multiple: true, class: "form-control" %>
+      <small class="text-muted">Optional – You may upload one or more images.</small>
+    </div>
+
+    <%= form.submit corpse_flower.persisted? ? "Update Flower" : "Save Flower",
+                    class: "btn btn-primary mt-3 px-4 py-2" %>
+  </div>
+<% end %>
