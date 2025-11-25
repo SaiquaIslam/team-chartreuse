@@ -1,0 +1,58 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">Flower Listings</h1>
+
+    <%= link_to "Add Flower",
+        new_admin_corpse_flower_path,
+        class: "btn btn-success px-4" %>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Size</th>
+        <th>Color</th>
+        <th>Putridity</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @corpse_flowers.each do |flower| %>
+        <tr>
+          <td><%= flower.name %></td>
+          <td>$<%= flower.price %></td>
+          <td><%= flower.size %></td>
+          <td><%= flower.color %></td>
+          <td><%= flower.putridity %></td>
+          <td><%= flower.stock %></td>
+
+          <td>
+            <% if flower.stock == 0 %>
+              <span class="badge bg-danger">Sold Out</span>
+            <% elsif flower.stock < 5 %>
+              <span class="badge bg-warning text-dark">Low</span>
+            <% else %>
+              <span class="badge bg-success">Available</span>
+            <% end %>
+          </td>
+
+          <td class="text-center">
+            <%= link_to "Edit",
+                edit_admin_corpse_flower_path(flower),
+                class: "btn btn-sm btn-primary me-2" %>
+
+            <%= link_to "Delete",
+                admin_corpse_flower_path(flower),
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                class: "btn btn-sm btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

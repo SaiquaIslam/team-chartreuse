@@ -8,11 +8,13 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <!-- REQUIRED FOR DELETE METHOD, SIGN OUT -->
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
     <%= render 'shared/navbar' %>
-
     <%= render 'shared/flash' %>
 
     <main role="main" class="container">
