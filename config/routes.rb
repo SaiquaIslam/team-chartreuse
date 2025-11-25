@@ -21,8 +21,8 @@ Rails.application.routes.draw do
   namespace :checkout do
     get  'shipping', to: 'shippings#new'
     post 'shipping', to: 'shippings#create'
-    get  'payment', to: 'payments#new'
-    post 'payment', to: 'payments#create'
+    get  'payment',  to: 'payments#new'
+    post 'payment',  to: 'payments#create'
   end
 
   # Hunt Registration (Saiqua)
@@ -37,4 +37,11 @@ Rails.application.routes.draw do
   #root "hunt_registration#new"
   # Defines the root path route ("/")
   # root "posts#index"
+
+  ##################################################################
+  # Admin Routes (Sajal PR2)
+  ##################################################################
+  namespace :admin do
+    resources :corpse_flowers
+  end
 end
