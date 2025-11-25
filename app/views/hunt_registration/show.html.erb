@@ -18,18 +18,43 @@
     <% end %>
   </div>
 
-  <!-- RIGHT: Flower specs / owner -->
+  <!-- RIGHT: Flower specs / owner / order -->
   <div class="col-md-7">
+    <!-- Owner -->
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title mb-3">Flower & Owner</h5>
+
+        <% if @corpse_flower.present? %>
+          <p class="mb-1">
+            <strong>Flower:</strong>
+            <%= @corpse_flower.name %>
+          </p>
+          <p class="mb-1">
+            <strong>Putridity:</strong>
+            <%= @corpse_flower.putridity %>
+          </p>
+          <p class="mb-1">
+            <strong>Color:</strong>
+            <%= @corpse_flower.color %>
+          </p>
+          <p class="mb-3">
+            <strong>Size:</strong>
+            <%= @corpse_flower.size %>
+          </p>
+        <% else %>
+          <p class="text-muted mb-3">
+            Flower specs (size, putridity, etc.) are not linked to a purchase
+            for this registration yet.
+          </p>
+        <% end %>
 
         <p class="mb-1">
           <strong>Nickname:</strong>
           <%= @hunt_registration.nickname.presence || "(No nickname)" %>
         </p>
 
-        <p class="mb-1">
+        <p class="mb-0">
           <strong>Owner:</strong>
           <% if @hunt_registration.user.present? %>
             <%= @hunt_registration.user.email %>
@@ -37,34 +62,27 @@
             (Unknown owner)
           <% end %>
         </p>
-
-        <!-- Placeholder for “flower specs” (will use corpse flower data later) -->
-        <p class="mb-0 text-muted">
-          Flower specs (size, putridity, etc.) will appear here once
-          this page is wired to the purchased corpse flower.
-        </p>
       </div>
     </div>
 
-    <!-- Location block -->
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title mb-3">Location</h5>
+ 
+<!-- Location block -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title mb-3">Location</h5>
 
-        <p class="mb-1">
-          <strong>Address or Place:</strong><br>
-          <%= @hunt_registration.location_description.presence || "(No location provided)" %>
-        </p>
+    <p class="mb-1">
+      <strong>Address or Place:</strong><br>
+      <%= @hunt_registration.location_description.presence || "(No location provided)" %>
+    </p>
 
-        <% if @hunt_registration.latitude.present? && @hunt_registration.longitude.present? %>
-          <p class="mb-0">
-            <strong>Coordinates:</strong>
-            <%= @hunt_registration.latitude %>,
-            <%= @hunt_registration.longitude %>
-          </p>
-        <% end %>
-      </div>
-    </div>
+    <% if @hunt_registration.latitude.present? && @hunt_registration.longitude.present? %>
+      <p class="mb-0">
+        <strong>Coordinates:</strong>
+        <%= @hunt_registration.latitude %>,
+        <%= @hunt_registration.longitude %>
+      </p>
+    <% end %>
   </div>
 </div>
 
@@ -90,7 +108,7 @@
   <div class="card-body">
     <h5 class="card-title mb-3">Visit Gallery (Coming Soon)</h5>
     <p class="text-muted mb-0">
-      This area will be implemented in M1
+      This area will be implemented in M2 for visit photos and comments.
     </p>
   </div>
 </div>

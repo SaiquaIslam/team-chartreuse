@@ -17,13 +17,25 @@
 
     <div class="mb-3">
       <h3 class="h6 text-muted">Flower Information</h3>
-      <p>Cherry Blossom</p>
+      <p><strong><%= @corpse_flower.name %></strong></p>
+      <p><%= @corpse_flower.description %></p>
+      <p>Size: <%= @corpse_flower.size %></p>
+      <p>Putridity: <%= @corpse_flower.putridity %></p>
     </div>
 
-    <div class="mb-3">
-      <h3 class="h6 text-muted">Order Information</h3>
-      <p>1234 on 11/24/2025</p>
-    </div>
+<div class="mb-3">
+  <h3 class="h6 text-muted">Order Information</h3>
+
+  <% if @order_item.present? && @order_item.order.present? %>
+    <p>
+      <strong>Order #<%= @order_item.order.id %></strong><br>
+      Placed on <%= @order_item.order.created_at.strftime("%b %d, %Y") %>
+    </p>
+  <% else %>
+    <p class="text-muted">(No order information available)</p>
+  <% end %>
+</div>
+
 
 <div class="mb-3">
   <h3 class="h6 text-muted">Owner</h3>

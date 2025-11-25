@@ -13,18 +13,32 @@
         <th>Status</th>
         <th>Total</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <% @orders.each do |order| %>
-        <tr>
-          <td><%= order.id %></td>
-          <td><%= order.created_at.strftime("%b %d, %Y") %></td>
-          <td><%= order.status %></td>
-          <td><%= number_to_currency(order.total_cents / 100.0) %></td>
-          <td><%= link_to "View", order_path(order) %></td>
-        </tr>
-      <% end %>
+  <% order.order_items.each do |item| %>
+    <tr>
+      <td><%= order.id %></td>
+      <td><%= order.created_at.strftime("%b %d, %Y") %></td>
+      <td><%= order.status %></td>
+      <td><%= number_to_currency(order.total_cents / 100.0) %></td>
+
+      <!-- Show the flower name from corpse_flower -->
+      <td><%= item.corpse_flower.name %></td>
+
+      <td><%= link_to "View", order_path(order) %></td>
+
+      <td>
+        <%= link_to "Join Scavenger Hunt",
+              new_hunt_registration_path(order_item_id: item.id),
+              class: "btn btn-sm btn-success" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
+
     </tbody>
   </table>
 <% else %>
