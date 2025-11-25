@@ -26,7 +26,13 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#">Account</a>
+           <% if user_signed_in? %>
+               <!-- Logged-in: Account = Order history -->
+               <%= link_to "Account", orders_path, class: "nav-link" %>
+           <% else %>
+              <!-- Not logged-in: send to Sign In -->
+              <%= link_to "Account", new_user_session_path, class: "nav-link" %>
+           <% end %>
         </li>
 
         <!-- Cart (Tanvir’s version, preserved) -->

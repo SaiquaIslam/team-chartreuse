@@ -17,13 +17,26 @@ Rails.application.routes.draw do
   resource :cart, only: [:show]
   resources :cart_items, only: [:create]
 
-  # Checkout (Rafy PR1, PR2)
+  # Checkout - PR1/PR2/PR3
   namespace :checkout do
+    # Shipping (Rafy PR1)
     get  'shipping', to: 'shippings#new'
     post 'shipping', to: 'shippings#create'
-    get  'payment',  to: 'payments#new'
-    post 'payment',  to: 'payments#create'
+
+    # Payment (Rafy PR2)
+    get  'payment', to: 'payments#new'
+    post 'payment', to: 'payments#create'
+
+    # Review + Finalize Order (Rafy PR3, US12)
+    get  'review', to: 'reviews#show'
+    post 'review', to: 'reviews#create'
+
+    # Confirmation (Rafy PR3, US12)
+    get  'confirmation/:id', to: 'confirmations#show', as: :confirmation
   end
+
+  # Purchase history (Rafy PR3, US13)
+  resources :orders, only: [:index, :show]
 
   # Hunt Registration (Saiqua)
   # Hunt list page (US25)

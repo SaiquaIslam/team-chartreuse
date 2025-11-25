@@ -1,0 +1,48 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: orders
+#
+#  id               :bigint           not null, primary key
+#  shipping_address :string
+#  shipping_city    :string
+#  shipping_name    :string
+#  shipping_phone   :string
+#  shipping_state   :string
+#  shipping_zip     :string
+#  status           :string
+#  total_cents      :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :bigint           not null
+#
+# Indexes
+#
+#  index_orders_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
+one:
+  user: one
+  total_cents: 1
+  status: MyString
+  shipping_name: MyString
+  shipping_address: MyString
+  shipping_city: MyString
+  shipping_state: MyString
+  shipping_zip: MyString
+  shipping_phone: MyString
+
+two:
+  user: two
+  total_cents: 1
+  status: MyString
+  shipping_name: MyString
+  shipping_address: MyString
+  shipping_city: MyString
+  shipping_state: MyString
+  shipping_zip: MyString
+  shipping_phone: MyString

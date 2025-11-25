@@ -21,6 +21,11 @@ class Cart < ApplicationRecord
   has_many :cart_items, dependent: :destroy
   has_many :corpse_flowers, through: :cart_items
 
+  def self.for_user(user)
+    find_or_create_by(user: user)
+  end
+
+
   def calculate_total
     cart_items.sum { |item| item.corpse_flower.price * item.quantity }
   end

@@ -1,0 +1,33 @@
+<h1>Order <%= @order.id %></h1>
+
+<% if flash[:alert].present? %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
+
+<p><strong>Date:</strong> <%= @order.created_at.strftime("%B %d, %Y") %></p>
+<p><strong>Status:</strong> <%= @order.status %></p>
+<p><strong>Total:</strong> <%= number_to_currency(@order.total_cents / 100.0) %></p>
+
+<h2>Shipping Information</h2>
+<p><strong>Name:</strong> <%= @order.shipping_name %></p>
+<p><strong>Address:</strong> <%= @order.shipping_address %></p>
+<p>
+  <%= @order.shipping_city %>,
+  <%= @order.shipping_state %>
+  <%= @order.shipping_zip %>
+</p>
+<p><strong>Phone:</strong> <%= @order.shipping_phone %></p>
+
+<h2>Items</h2>
+<% if @order.order_items.any? %>
+  <ul>
+    <% @order.order_items.each do |item| %>
+      <li>
+        <%= item.corpse_flower.name %> × <%= item.quantity %>
+        – <%= number_to_currency(item.price_cents / 100.0) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No items recorded for this order.</p>
+<% end %>

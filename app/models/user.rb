@@ -31,4 +31,6 @@ class User < ApplicationRecord
     # cart association (Tanvir :PR3)
     has_one :cart, dependent: :destroy
 
+    has_many :orders, dependent: :nullify
+
 end
