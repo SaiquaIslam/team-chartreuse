@@ -8,6 +8,7 @@
         <th>Flower Nickname</th>
         <th>Location</th>
         <th>Owner</th>
+        <th>Action</th>
       </tr>
     </thead>
 
@@ -41,6 +42,10 @@
             <% else %>
               (Unknown)
             <% end %>
+          </td>
+                    <td class="text-nowrap">
+            <%= link_to 'View Details', hunt_registration_show_path(hunt),
+                        class: 'btn btn-success btn-sm' %>
           </td>
 
         </tr>

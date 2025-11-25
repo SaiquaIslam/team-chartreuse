@@ -44,3 +44,61 @@ user.role = :admin   # This makes the user an admin
 user.save!
 
 puts "✅ Admin ensured: #{admin_email} (role: #{user.role})"
+
+
+puts "Seeding users..."
+user1 = User.create!(email: "alice@example.com",  password: "password123")
+user2 = User.create!(email: "bob@example.com",    password: "password123")
+user3 = User.create!(email: "charlie@example.com", password: "password123")
+
+puts "Seeding hunt registrations..."
+
+hunts = [
+  {
+    nickname: "Midtown Titan",
+    location_description: "Overton Park, Memphis TN",
+    latitude: 35.1501,
+    longitude: -89.9940,
+    instructions: "Park near the main pavilion and walk 5 minutes north.",
+    user: user1,
+    photo_filename: "1.png"
+  },
+  {
+    nickname: "East Memphis Stinker",
+    location_description: "Shelby Farms Park - Visitor Center",
+    latitude: 35.1392,
+    longitude: -89.8482,
+    instructions: "Follow the Yellow Trail to the botanical area.",
+    user: user2,
+    photo_filename: "2.png"
+  },
+  {
+    nickname: "Downtown Bloom",
+    location_description: "Beale Street Landing",
+    latitude: 35.1380,
+    longitude: -90.0586,
+    instructions: "Check near the riverside walkway.",
+    user: user3,
+    photo_filename: "3.png"
+  }
+]
+
+hunts.each do |attrs|
+  filename = attrs.delete(:photo_filename)
+  record = HuntRegistration.create!(attrs)
+
+  # Attach a placeholder photo (use any jpeg/png you add)
+  photo_path = Rails.root.join("public", "images", "hunt_flowers", filename)
+
+  if File.exist?(photo_path)
+    record.photo.attach(
+      io: File.open(photo_path),
+      filename: filename,
+      content_type: "image/png"
+    )
+  end
+
+  puts "Created #{record.nickname}"
+end
+
+puts "Seeding completed!"

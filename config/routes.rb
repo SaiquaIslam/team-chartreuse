@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     # Hunt Register page (US22)
   get  "hunt_registration/new", to: "hunt_registration#new",    as: "new_hunt_registration"
   post "hunt_registration",     to: "hunt_registration#create", as: "hunt_registrations"
+  get  "hunt_registration/:id", to: "hunt_registration#show",   as: "hunt_registration_show"
 
    
   #root "hunt_registration#new"
