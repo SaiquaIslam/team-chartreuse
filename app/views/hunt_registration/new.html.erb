@@ -81,15 +81,20 @@
     <%= form.text_field :latitude,
                         label: "Latitude",
                         id: "latitude",
+                        required: true,
                         placeholder: "35.149532" %>
   </div>
+
   <div class="col-md-6">
     <%= form.text_field :longitude,
                         label: "Longitude",
                         id: "longitude",
+                        required: true,
                         placeholder: "-90.048981" %>
   </div>
 </div>
+
+
 
 
     <%= form.text_area :instructions,

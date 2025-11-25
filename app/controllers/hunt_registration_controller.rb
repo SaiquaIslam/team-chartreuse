@@ -6,6 +6,10 @@ class HuntRegistrationController < ApplicationController
     @hunt_registrations = HuntRegistration.order(created_at: :desc)
     render :index
   end
+  def show
+  @hunt_registration = HuntRegistration.find(params[:id])
+  render :show
+end
     def new
     @hunt_registration = HuntRegistration.new
     render :new
@@ -20,7 +24,7 @@ def create
     redirect_to hunt_path
   else
     flash.now[:error] = "Unable to save registration."
-    render :new_hunt, status: :unprocessable_entity
+    render :new, status: :unprocessable_entity
   end
 end
 
