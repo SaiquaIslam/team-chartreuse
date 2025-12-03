@@ -1,7 +1,7 @@
 class Admin::CorpseFlowersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
-  before_action :set_corpse_flower, only: []
+  before_action :set_corpse_flower, only: [:edit, :update, :destroy]
 
   def index
     @corpse_flowers = CorpseFlower.order(created_at: :desc)
@@ -19,6 +19,32 @@ class Admin::CorpseFlowersController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
+
+# =========================
+  # US18 — EDIT & UPDATE
+  # =========================
+  def edit
+  end
+
+  def update
+    if @corpse_flower.update(corpse_flower_params)
+      redirect_to admin_corpse_flowers_path, notice: "Flower updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  # =========================
+  # US19 — DELETE
+  # =========================
+ def destroy
+  if @corpse_flower.destroy
+    redirect_to admin_corpse_flowers_path, notice: "Flower deleted successfully."
+  else
+    redirect_to admin_corpse_flowers_path, alert: @corpse_flower.errors.full_messages.to_sentence
+  end
+end
 
   private
 

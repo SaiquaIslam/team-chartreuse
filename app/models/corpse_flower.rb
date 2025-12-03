@@ -62,4 +62,23 @@ class CorpseFlower < ApplicationRecord
   def display_price
     "$#{sprintf('%.2f', price)}"
   end
+
+# Associations (Sajal)
+
+
+# Prevent deletion if flower is inside an active cart
+before_destroy :block_if_in_cart
+
+private
+
+def block_if_in_cart
+  if cart_items.exists?
+    errors.add(:base, "Cannot delete this flower because it is currently in a customer's cart.")
+    throw :abort   # stops the destroy action
+  end
+end
+
+
+
+
 end
