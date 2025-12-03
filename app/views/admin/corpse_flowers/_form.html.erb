@@ -61,6 +61,41 @@
       <%= form.number_field :stock, class: "form-control", required: true %>
     </div>
 
+    <%# ============================================ %>
+    <%#     CURRENT IMAGE PREVIEW (Only on Edit)     %>
+    <%# ============================================ %>
+    <% if corpse_flower.persisted? %>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Current Image</label>
+
+        <% if corpse_flower.images.attached? %>
+          <%= image_tag(
+                corpse_flower.images.first.variant(resize_to_fill: [300, 200]),
+                class: "d-block mb-2 rounded",
+                alt: corpse_flower.name
+              ) %>
+
+        <% elsif corpse_flower.image_url.present? %>
+          <%= image_tag(
+                corpse_flower.image_url,
+                class: "d-block mb-2 rounded",
+                alt: corpse_flower.name,
+                style: "width:300px; height:200px; object-fit:cover;"
+              ) %>
+
+        <% else %>
+          <p class="text-muted">No image uploaded yet.</p>
+        <% end %>
+
+        <small class="text-muted d-block">
+          Uploading a new image will replace the current image.
+        </small>
+      </div>
+    <% end %>
+
+    <%# ============================================ %>
+    <%#        FILE UPLOAD FIELD                    %>
+    <%# ============================================ %>
     <div class="mb-3">
       <%= form.label :images, "Upload Images", class: "form-label fw-bold" %>
       <%= form.file_field :images, multiple: true, class: "form-control" %>
