@@ -2,34 +2,72 @@
   <div class="row">
     
     <!-- ============================= -->
-    <!-- SIDEBAR FILTERS (STATIC IN M1) -->
+    <!-- SIDEBAR FILTERS (M2 PR1 - US04) -->
     <!-- ============================= -->
     <div class="col-md-3">
       <div class="filters-sidebar">
-        <h5>Filters</h5>
-
-        <div class="filter-section">
-          <h6>Size</h6>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Small (2–4ft)</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Medium (5–7ft)</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Large (8–10ft)</label></div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Filters</h5>
+          <% if filters_active? %>
+            <%= link_to "Clear All", corpse_flowers_path(search: params[:search]), class: "btn btn-sm btn-outline-danger" %>
+          <% end %>
         </div>
 
-        <div class="filter-section">
-          <h6>Putridity</h6>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Mild</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Moderate</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Strong</label></div>
-        </div>
+        <%= form_with(url: corpse_flowers_path, method: :get, local: true) do |f| %>
+          
+          <!-- Preserve search parameter -->
+          <%= hidden_field_tag :search, params[:search] if params[:search].present? %>
 
-        <div class="filter-section">
-          <h6>Color</h6>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Light</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Medium</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Dark</label></div>
-        </div>
+          <!-- SIZE FILTER -->
+          <div class="filter-section">
+            <h6>Size</h6>
+            <% @available_sizes.each do |size| %>
+              <div class="form-check">
+                <%= check_box_tag 'sizes[]', size, 
+                    (params[:sizes] || []).include?(size), 
+                    class: 'form-check-input', 
+                    id: "size_#{size}",
+                    onchange: 'this.form.submit()' %>
+                <%= label_tag "size_#{size}", size.capitalize, class: 'form-check-label' %>
+              </div>
+            <% end %>
+          </div>
 
-        <small class="text-muted d-block mt-3"><em>Filters coming in M2</em></small>
+          <!-- COLOR FILTER -->
+          <div class="filter-section">
+            <h6>Color</h6>
+            <% if @available_colors.any? %>
+              <% @available_colors.each do |color| %>
+                <div class="form-check">
+                  <%= check_box_tag 'colors[]', color, 
+                      (params[:colors] || []).include?(color), 
+                      class: 'form-check-input', 
+                      id: "color_#{color}",
+                      onchange: 'this.form.submit()' %>
+                  <%= label_tag "color_#{color}", color.capitalize, class: 'form-check-label' %>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-muted small">No colors available</p>
+            <% end %>
+          </div>
+
+          <!-- PUTRIDITY FILTER -->
+          <div class="filter-section">
+            <h6>Putridity Level</h6>
+            <% @putridity_ranges.each do |range| %>
+              <div class="form-check">
+                <%= check_box_tag 'putridity_ranges[]', range[:value], 
+                    (params[:putridity_ranges] || []).include?(range[:value]), 
+                    class: 'form-check-input', 
+                    id: "putridity_#{range[:value]}",
+                    onchange: 'this.form.submit()' %>
+                <%= label_tag "putridity_#{range[:value]}", range[:label], class: 'form-check-label' %>
+              </div>
+            <% end %>
+          </div>
+
+        <% end %>
       </div>
     </div>
 
@@ -45,6 +83,25 @@
         </select>
       </div>
 
+      <!-- ACTIVE FILTERS DISPLAY -->
+      <% if filters_active? %>
+        <div class="alert alert-info mb-3">
+          <strong>Active Filters:</strong>
+          <% if params[:sizes].present? %>
+            <span class="badge bg-primary me-1">Size: <%= params[:sizes].join(', ').capitalize %></span>
+          <% end %>
+          <% if params[:colors].present? %>
+            <span class="badge bg-success me-1">Color: <%= params[:colors].join(', ').capitalize %></span>
+          <% end %>
+          <% if params[:putridity_ranges].present? %>
+            <span class="badge bg-warning me-1">
+              Putridity: <%= params[:putridity_ranges].map { |r| r.gsub('-', ' to ') }.join(', ') %>
+            </span>
+          <% end %>
+          <%= link_to 'Clear All', corpse_flowers_path(search: params[:search]), class: 'btn btn-sm btn-outline-secondary ms-2' %>
+        </div>
+      <% end %>
+
       <!-- IF SEARCH RETURNS NO RESULTS -->
       <% if params[:search].present? && @corpse_flowers.empty? %>
         <div class="text-center py-5">
@@ -53,15 +110,30 @@
           <%= link_to 'Clear search', corpse_flowers_path, class: 'btn btn-outline-secondary' %>
         </div>
 
+      <!-- IF FILTERS RETURN NO RESULTS -->
+      <% elsif filters_active? && @corpse_flowers.empty? %>
+        <div class="text-center py-5">
+          <h4 class="text-muted">No flowers match your filters</h4>
+          <p class="text-muted mb-3">Try adjusting your filter selections</p>
+          <%= link_to 'Clear filters', corpse_flowers_path(search: params[:search]), class: 'btn btn-outline-secondary' %>
+        </div>
+
       <% elsif @corpse_flowers.any? %>
 
         <!-- SEARCH RESULT COUNT -->
         <% if params[:search].present? %>
-          <div class="alert alert-info mb-3">
+          <div class="alert alert-secondary mb-3">
             Found <%= pluralize(@corpse_flowers.count, "flower") %> matching
             "<strong><%= params[:search] %></strong>"
             <%= link_to 'Clear', corpse_flowers_path, class: 'btn btn-sm btn-outline-secondary ms-2' %>
           </div>
+        <% end %>
+
+        <!-- FILTER RESULT COUNT -->
+        <% if filters_active? && params[:search].blank? %>
+          <p class="text-muted mb-3">
+            Showing <%= pluralize(@corpse_flowers.count, "flower") %>
+          </p>
         <% end %>
 
         <!-- ============================= -->
@@ -75,29 +147,18 @@
 
                 <%= link_to corpse_flower_path(flower) do %>
 
-                  <%# ---------------------------------------------- %>
-                  <%# IMAGE PRIORITY (NO PLACEHOLDER)                %>
-                  <%# 1. ActiveStorage images                        %>
-                  <%# 2. Seed image_url                              %>
-                  <%# 3. Nothing else                                %>
-                  <%# ---------------------------------------------- %>
-
                   <% if flower.images.attached? %>
-
                     <%= image_tag(
                         url_for(flower.images.first),
                         alt: flower.name,
                         style: "width:100%; height:200px; object-fit:cover;"
                       ) %>
-
                   <% elsif flower.image_url.present? %>
-
                     <%= image_tag(
                         flower.image_url,
                         alt: flower.name,
                         style: "width:100%; height:200px; object-fit:cover;"
                       ) %>
-
                   <% end %>
 
                 <% end %>
@@ -108,7 +169,7 @@
                       class: "flower-name d-block mb-2" %>
 
                   <p class="flower-attributes mb-2">
-                    <%= flower.size %> – <%= flower.putridity %>
+                    <%= flower.size.capitalize %> – Putridity: <%= flower.putridity %> – <%= flower.color.capitalize %>
                   </p>
 
                   <h5 class="flower-price">

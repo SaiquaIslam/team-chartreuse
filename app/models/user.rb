@@ -27,6 +27,7 @@ class User < ApplicationRecord
 
     enum role: { customer: 0, admin: 1 }
   has_many :hunt_registrations, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
     # cart association (Tanvir :PR3)
     has_one :cart, dependent: :destroy

@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Corpse Flowers - Browse & Search (Tanvir PR1, PR2)
-  resources :corpse_flowers, only: [:index, :show]
+  resources :corpse_flowers, only: [:index, :show] do
+    resources :reviews, only: [:new, :create]
+  end
 
   # Cart System (Tanvir PR3)
   resource :cart, only: [:show]

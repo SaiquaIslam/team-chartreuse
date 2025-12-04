@@ -10,7 +10,7 @@
 
 <h2>Shipping Information</h2>
 <p><strong>Name:</strong> <%= @order.shipping_name %></p>
-<p><strong>Address:</strong> <%= @order.shipping_address %></p>
+<p><strong<Address:</strong> <%= @order.shipping_address %></p>
 <p>
   <%= @order.shipping_city %>,
   <%= @order.shipping_state %>
@@ -25,6 +25,24 @@
       <li>
         <%= item.corpse_flower.name %> × <%= item.quantity %>
         – <%= number_to_currency(item.price_cents / 100.0) %>
+
+        <%# --- M2 PR1: Review logic (no status check needed) --- %>
+        <% if user_signed_in? %>
+          <% if current_user.reviews.exists?(corpse_flower: item.corpse_flower) %>
+            <span class="badge bg-secondary" style="margin-left: 0.5rem;">Reviewed</span>
+          <% else %>
+            <%= link_to "Write Review",
+                        new_corpse_flower_review_path(item.corpse_flower),
+                        class: "btn btn-sm btn-outline-primary",
+                        style: "margin-left: 0.5rem;" %>
+          <% end %>
+        <% else %>
+          <%= link_to "Sign in to review",
+                      new_user_session_path,
+                      class: "btn btn-sm btn-link",
+                      style: "margin-left: 0.5rem;" %>
+        <% end %>
+        <%# --- END M2 PR1 --- %>
       </li>
     <% end %>
   </ul>
