@@ -22,7 +22,11 @@
 #  index_corpse_flowers_on_name    (name)
 #  index_corpse_flowers_on_status  (status)
 #
+
 class CorpseFlower < ApplicationRecord
+  ############################################################
+  # Validations
+  ############################################################
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :stock, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -30,69 +34,52 @@ class CorpseFlower < ApplicationRecord
   validates :size, presence: true, inclusion: { in: %w[small medium large] }
   validates :putridity, presence: true, numericality: { only_integer: true, in: 1..10 }
 
-  # Associations (Tanvir PR3)
+  ############################################################
+  # Associations
+  ############################################################
   has_many :cart_items, dependent: :destroy
   has_many :carts, through: :cart_items
   has_many_attached :images
   has_many :reviews, dependent: :destroy
 
-  # Associations (Rafy)
+  # Rafy associations
   has_many :order_items
   has_many :orders, through: :order_items
-  
-  # ========================================
-  # SCOPES (M1 + M2)
-  # ========================================
-  
-  # M1 Scopes
+
+  ############################################################
+  # Scopes
+  ############################################################
   scope :available, -> { where(status: 'available') }
   scope :in_stock, -> { where('stock > ?', 0) }
   scope :search, ->(term) {
     where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", 
           "%#{term.downcase}%", "%#{term.downcase}%") if term.present?
   }
-  
-  # M2 PR1 - Filter Scopes (US04)
-  scope :filter_by_size, ->(sizes) {
-    where(size: sizes) if sizes.present?
-  }
-  
-  scope :filter_by_color, ->(colors) {
-    where(color: colors) if colors.present?
-  }
-  
-  scope :filter_by_putridity, ->(levels) {
-    where(putridity: levels) if levels.present?
-  }
-  
-  # ========================================
-  # CLASS METHODS (M2 PR1)
-  # ========================================
-  
-  # Get distinct colors from database for dynamic filter options
-  def self.distinct_colors
-    distinct.pluck(:color).compact.sort
-  end
-  
-  # ========================================
-  # INSTANCE METHODS
-  # ========================================
-  
+
+  ############################################################
+  # Instance Methods
+  ############################################################
   def available?
     status == 'available' && stock.positive?
   end
-  
+
   def sold_out?
     stock.zero? || status == 'sold_out'
   end
-  
+
   def display_price
     "$#{sprintf('%.2f', price)}"
   end
 
-  # Associations (Sajal)
-  # Prevent deletion if flower is inside an active cart
+  ############################################################
+  # Callbacks
+  ############################################################
+
+  # Prevent deleting a flower if it appears in any active cart
   before_destroy :block_if_in_cart
+
+  # Keep status synced with stock (US20)
+  before_save :update_sold_out_status
 
   private
 
@@ -100,6 +87,15 @@ class CorpseFlower < ApplicationRecord
     if cart_items.exists?
       errors.add(:base, "Cannot delete this flower because it is currently in a customer's cart.")
       throw :abort
+    end
+  end
+
+  def update_sold_out_status
+    if stock.to_i <= 0
+      self.stock  = 0
+      self.status = "sold_out"
+    else
+      self.status = "available"
     end
   end
 end
