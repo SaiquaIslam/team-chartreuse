@@ -1,0 +1,109 @@
+<h1>Write a Review for <%= @corpse_flower.name %></h1>
+
+<% if flash[:alert].present? %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
+
+<% if @review.errors.any? %>
+  <div style="color: red;">
+    <h4>There were some problems with your review:</h4>
+    <ul>
+      <% @review.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [@corpse_flower, @review], local: true, html: { multipart: true, id: "review-form" } do |f| %>
+  <!-- ⭐ Rating with hover + click stars -->
+  <div class="mb-3">
+    <%= f.label :rating, "Rating" %><br>
+
+    <!-- Hidden field that actually stores the numeric rating -->
+    <%= f.hidden_field :rating, id: "review_rating" %>
+
+    <div id="star-rating" style="font-size: 2rem; cursor: pointer;">
+      <% 1.upto(5) do |star| %>
+        <span
+          class="star"
+          data-value="<%= star %>"
+          style="display: inline-block; padding: 0 4px;"
+        >
+          ★
+        </span>
+      <% end %>
+    </div>
+    <small class="form-text text-muted">
+      Click a star to set your rating.
+    </small>
+  </div>
+
+  <!-- Title -->
+  <div class="mb-3">
+    <%= f.label :title, "Title" %>
+    <%= f.text_field :title, class: "form-control", required: true %>
+  </div>
+
+  <!-- Comment -->
+  <div class="mb-3">
+    <%= f.label :comment, "Review" %>
+    <%= f.text_area :comment, class: "form-control", rows: 5, required: true %>
+  </div>
+
+  <!-- 📷 File upload instead of URL -->
+  <div class="mb-3">
+    <%= f.label :image, "Photo (optional)" %><br>
+    <%= f.file_field :image, accept: "image/*" %>
+    <small class="form-text text-muted">
+      Choose an image file from your device.
+    </small>
+  </div>
+
+  <%= f.submit "Submit Review", class: "btn btn-primary" %>
+  <%= link_to "Cancel", @corpse_flower, class: "btn btn-secondary ms-2" %>
+<% end %>
+
+<!-- ⭐ Star rating JavaScript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const starsContainer = document.getElementById("star-rating");
+    const stars = starsContainer.querySelectorAll(".star");
+    const ratingInput = document.getElementById("review_rating");
+
+    // If there's an existing rating (e.g., validation error re-render), use it
+    let currentRating = parseInt(ratingInput.value || "0", 10);
+
+    function renderStars(hoverValue = 0) {
+      const activeValue = hoverValue || currentRating;
+      stars.forEach((star) => {
+        const value = parseInt(star.dataset.value, 10);
+        if (value <= activeValue) {
+          star.style.color = "#f5c518"; // gold-ish
+        } else {
+          star.style.color = "#ccc";
+        }
+      });
+    }
+
+    stars.forEach((star) => {
+      star.addEventListener("mouseenter", () => {
+        const hoverValue = parseInt(star.dataset.value, 10);
+        renderStars(hoverValue);
+      });
+
+      star.addEventListener("mouseleave", () => {
+        renderStars();
+      });
+
+      star.addEventListener("click", () => {
+        currentRating = parseInt(star.dataset.value, 10);
+        ratingInput.value = currentRating;
+        renderStars();
+      });
+    });
+
+    // Initial render (e.g., edit or error re-render)
+    renderStars();
+  });
+</script>
