@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_25_084557) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_04_021553) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -116,6 +116,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_084557) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.integer "rating", null: false
+    t.string "title", null: false
+    t.text "comment", null: false
+    t.string "photo"
+    t.bigint "user_id", null: false
+    t.bigint "corpse_flower_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corpse_flower_id"], name: "index_reviews_on_corpse_flower_id"
+    t.index ["user_id", "corpse_flower_id"], name: "index_reviews_on_user_id_and_corpse_flower_id", unique: true
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -139,4 +153,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_25_084557) do
   add_foreign_key "order_items", "corpse_flowers"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
+  add_foreign_key "reviews", "corpse_flowers"
+  add_foreign_key "reviews", "users"
 end
