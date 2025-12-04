@@ -44,7 +44,7 @@ class CorpseFlower < ApplicationRecord
   has_many_attached :images
 
   has_many :reviews, dependent: :destroy
->>>>>>> Stashed changes
+
 
   # Rafy associations
   has_many :order_items
