@@ -21,8 +21,11 @@
 #
 #  index_corpse_flowers_on_name    (name)
 #  index_corpse_flowers_on_status  (status)
-#
+# associations should be defined here
 
+
+
+# CorpseFlower Model
 class CorpseFlower < ApplicationRecord
 
   ############################################################
@@ -44,7 +47,6 @@ class CorpseFlower < ApplicationRecord
   has_many_attached :images
 
   has_many :reviews, dependent: :destroy
->>>>>>> Stashed changes
 
   # Rafy associations
   has_many :order_items
@@ -118,6 +120,11 @@ class CorpseFlower < ApplicationRecord
   # Callbacks
   ############################################################
 
+
+
+
+
+  # Sajal (M2 PR1)
   # Prevent deleting a flower if it appears in any active cart
   before_destroy :block_if_in_cart
 
