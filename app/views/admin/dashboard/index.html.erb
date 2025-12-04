@@ -1,0 +1,68 @@
+<div class="container mt-5">
+
+  <h1 class="fw-bold mb-4 text-center">Admin Dashboard</h1>
+
+  <div class="row g-4 justify-content-center">
+
+    <!-- Total Flowers -->
+    <div class="col-md-3">
+      <div class="dash-card shadow-sm p-4 text-center">
+        <h4 class="text-muted mb-2">Total Flowers</h4>
+        <div class="dash-number"><%= @total_flowers %></div>
+      </div>
+    </div>
+
+    <!-- Total Users -->
+    <div class="col-md-3">
+      <div class="dash-card shadow-sm p-4 text-center">
+        <h4 class="text-muted mb-2">Total Users</h4>
+        <div class="dash-number"><%= @total_users %></div>
+      </div>
+    </div>
+
+    <!-- Total Orders -->
+    <div class="col-md-3">
+      <div class="dash-card shadow-sm p-4 text-center">
+        <h4 class="text-muted mb-2">Total Orders</h4>
+        <div class="dash-number"><%= @total_orders %></div>
+      </div>
+    </div>
+
+    <!-- Total Hunts -->
+    <div class="col-md-3">
+      <div class="dash-card shadow-sm p-4 text-center">
+        <h4 class="text-muted mb-2">Total Hunts</h4>
+        <div class="dash-number"><%= @total_hunts %></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-5">
+    <%= link_to "Back to Listings", admin_corpse_flowers_path, class: "btn btn-secondary px-4 py-2" %>
+  </div>
+
+</div>
+
+<style>
+  /* Card base style */
+  .dash-card {
+    border-radius: 12px;
+    background: #ffffff;
+    transition: 0.2s ease;
+    border: 1px solid #e6e6e6;
+  }
+
+  .dash-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  }
+
+  /* Large green number */
+  .dash-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2f7d32 !important; /* guaranteed green */
+    margin-top: 10px;
+  }
+</style>

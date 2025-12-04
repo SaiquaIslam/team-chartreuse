@@ -24,6 +24,7 @@
 #
 
 class CorpseFlower < ApplicationRecord
+
   ############################################################
   # Validations
   ############################################################
@@ -39,20 +40,64 @@ class CorpseFlower < ApplicationRecord
   ############################################################
   has_many :cart_items, dependent: :destroy
   has_many :carts, through: :cart_items
+
   has_many_attached :images
+<<<<<<< Updated upstream
+=======
+
   has_many :reviews, dependent: :destroy
+>>>>>>> Stashed changes
 
   # Rafy associations
   has_many :order_items
   has_many :orders, through: :order_items
 
   ############################################################
-  # Scopes
+  # Filter Scopes (M2 PR1)
   ############################################################
-  scope :available, -> { where(status: 'available') }
-  scope :in_stock, -> { where('stock > ?', 0) }
+
+  # Size filter: params[:sizes] → ["small", "medium"]
+  scope :filter_by_size, ->(sizes) do
+    where(size: sizes) if sizes.present?
+  end
+
+  # Color filter: params[:colors] → ["Dark Purple", "Cherry Pink"]
+  scope :filter_by_color, ->(colors) do
+    where(color: colors) if colors.present?
+  end
+
+  # Range string like "1-3", "4-6"
+  scope :filter_by_putridity_range, ->(range_str) do
+    from, to = range_str.split("-").map(&:to_i)
+    where(putridity: from..to)
+  end
+
+  # ✅ Used by controller after expand_putridity_ranges
+  #    putridity_levels → [1, 2, 3]
+  scope :filter_by_putridity, ->(levels) do
+    where(putridity: levels) if levels.present?
+  end
+
+  ############################################################
+  # Distinct values for sidebar filtering
+  ############################################################
+  def self.distinct_colors
+    distinct.pluck(:color).compact
+  end
+
+  def self.distinct_sizes
+    distinct.pluck(:size).compact
+  end
+
+  def self.distinct_putridity_levels
+    distinct.pluck(:putridity).compact
+  end
+
+  ############################################################
+  # Search Scope
+  ############################################################
   scope :search, ->(term) {
-    where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", 
+    where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
           "%#{term.downcase}%", "%#{term.downcase}%") if term.present?
   }
 
@@ -60,11 +105,11 @@ class CorpseFlower < ApplicationRecord
   # Instance Methods
   ############################################################
   def available?
-    status == 'available' && stock.positive?
+    status == "available" && stock.positive?
   end
 
   def sold_out?
-    stock.zero? || status == 'sold_out'
+    stock.zero? || status == "sold_out"
   end
 
   def display_price
@@ -78,7 +123,7 @@ class CorpseFlower < ApplicationRecord
   # Prevent deleting a flower if it appears in any active cart
   before_destroy :block_if_in_cart
 
-  # Keep status synced with stock (US20)
+  # Auto-update status based on stock (US20)
   before_save :update_sold_out_status
 
   private
@@ -92,7 +137,7 @@ class CorpseFlower < ApplicationRecord
 
   def update_sold_out_status
     if stock.to_i <= 0
-      self.stock  = 0
+      self.stock = 0
       self.status = "sold_out"
     else
       self.status = "available"
