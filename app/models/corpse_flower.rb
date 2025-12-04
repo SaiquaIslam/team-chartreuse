@@ -21,6 +21,9 @@
 #
 #  index_corpse_flowers_on_name    (name)
 #  index_corpse_flowers_on_status  (status)
+#
+#  index_corpse_flowers_on_name    (name)
+#  index_corpse_flowers_on_status  (status)
 # associations should be defined here
 
 
