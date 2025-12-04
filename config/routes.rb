@@ -53,9 +53,17 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   ##################################################################
-  # Admin Routes (Sajal PR2)
+  # Admin Routes (Sajal M1PR1, M2 PR2, M2 PR3)
   ##################################################################
   namespace :admin do
-    resources :corpse_flowers
+    resources :corpse_flowers do
+      member do
+      patch :increase_stock
+      patch :decrease_stock
+    end
   end
+  get "dashboard", to: "dashboard#index" 
+
+end 
+
 end

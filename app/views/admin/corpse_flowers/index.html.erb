@@ -5,7 +5,14 @@
     <%= link_to "Add Flower",
         new_admin_corpse_flower_path,
         class: "btn btn-success px-4" %>
+
+
+    <%= link_to "View Dashboard",
+        admin_dashboard_path,
+        class: "btn btn-success px-4" %>
   </div>
+
+
 
   <table class="table table-hover table-bordered">
     <thead class="table-light">
@@ -15,7 +22,7 @@
         <th>Size</th>
         <th>Color</th>
         <th>Putridity</th>
-        <th>Stock</th>
+        <th class="text-center">Stock</th>
         <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
@@ -29,11 +36,37 @@
           <td><%= flower.size %></td>
           <td><%= flower.color %></td>
           <td><%= flower.putridity %></td>
-          <td><%= flower.stock %></td>
 
+          <!-- =============================== -->
+          <!-- US20 — STOCK MANAGEMENT (+/-)  -->
+          <!-- =============================== -->
+          <td class="text-center">
+
+            <!-- Decrease Stock -->
+            <%= button_to "-",
+                decrease_stock_admin_corpse_flower_path(flower),
+                method: :patch,
+                class: "btn btn-sm btn-outline-danger",
+                data: { turbo_confirm: "Decrease stock for #{flower.name}?" } %>
+
+            <!-- Stock Count -->
+            <span class="mx-2 fw-bold"><%= flower.stock %></span>
+
+            <!-- Increase Stock -->
+            <%= button_to "+",
+                increase_stock_admin_corpse_flower_path(flower),
+                method: :patch,
+                class: "btn btn-sm btn-outline-success",
+                data: { turbo_confirm: "Increase stock for #{flower.name}?" } %>
+
+          </td>
+
+          <!-- =============================== -->
+          <!-- STATUS BADGE                    -->
+          <!-- =============================== -->
           <td>
             <% if flower.stock == 0 %>
-              <span class="badge bg-danger">Sold Out</span>
+              <span class="badge bg-danger">Out of Stock</span>
             <% elsif flower.stock < 5 %>
               <span class="badge bg-warning text-dark">Low</span>
             <% else %>
@@ -41,7 +74,11 @@
             <% end %>
           </td>
 
+          <!-- =============================== -->
+          <!-- ACTION BUTTONS (EDIT / DELETE) -->
+          <!-- =============================== -->
           <td class="text-center">
+
             <%= link_to "Edit",
                 edit_admin_corpse_flower_path(flower),
                 class: "btn btn-sm btn-primary me-2" %>
@@ -50,9 +87,16 @@
                 admin_corpse_flower_path(flower),
                 data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
                 class: "btn btn-sm btn-danger" %>
+
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+
+  <!-- ====================================== -->
+  <!-- US21 — View Dashboard Button           -->
+  <!-- ====================================== -->
+
+
 </div>

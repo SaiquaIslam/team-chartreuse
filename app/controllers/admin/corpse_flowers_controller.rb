@@ -1,7 +1,7 @@
 class Admin::CorpseFlowersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
-  before_action :set_corpse_flower, only: [:edit, :update, :destroy]
+  before_action :set_corpse_flower, only: [:edit, :update, :destroy, :increase_stock, :decrease_stock]
 
   def index
     @corpse_flowers = CorpseFlower.order(created_at: :desc)
@@ -45,6 +45,22 @@ class Admin::CorpseFlowersController < ApplicationController
     redirect_to admin_corpse_flowers_path, alert: @corpse_flower.errors.full_messages.to_sentence
   end
 end
+
+
+  # ===== US20: Manage Stock (M2 PR2) =====
+  def increase_stock
+    @corpse_flower.increment!(:stock)
+    redirect_to admin_corpse_flowers_path, notice: "Stock increased for #{@corpse_flower.name}."
+  end
+
+  def decrease_stock
+    if @corpse_flower.stock > 0
+      @corpse_flower.decrement!(:stock)
+      redirect_to admin_corpse_flowers_path, notice: "Stock decreased for #{@corpse_flower.name}."
+    else
+      redirect_to admin_corpse_flowers_path, alert: "Stock cannot go below 0."
+    end
+  end
 
   private
 
