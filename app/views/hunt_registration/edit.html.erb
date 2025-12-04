@@ -1,0 +1,60 @@
+<h1 class="my-4">Edit Hunt Registration</h1>
+
+<%= bootstrap_form_with model: @hunt_registration,
+                        url: hunt_registration_path(@hunt_registration),
+                        method: :patch,
+                        local: true,
+                        data: { turbo: false } do |form| %>
+
+  <!-- Nickname -->
+  <%= form.text_field :nickname,
+                      label: "Nickname",
+                      required: true %>
+
+  <!-- Location -->
+  <%= form.text_field :location_description,
+                      label: "Address / Location",
+                      required: true %>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <%= form.text_field :latitude,
+                          label: "Latitude",
+                          placeholder: "35.149532",
+                          required: true %>
+    </div>
+    <div class="col-md-6">
+      <%= form.text_field :longitude,
+                          label: "Longitude",
+                          placeholder: "-90.048981",
+                          required: true %>
+    </div>
+  </div>
+
+  <!-- Visiting Instructions -->
+  <%= form.text_area :instructions,
+                     label: "Visiting Instructions",
+                     rows: 3,
+                     required: true %>
+
+  <!-- Photo Upload -->
+  <div class="mb-3">
+    <%= form.file_field :photo,
+                        label: "Update Photo (optional)" %>
+
+    <% if @hunt_registration.photo.attached? %>
+      <p class="mt-2 small text-muted">
+        Current photo displayed below:
+      </p>
+      <%= image_tag @hunt_registration.photo,
+                    class: "img-thumbnail mb-3",
+                    style: "max-height: 150px;" %>
+    <% end %>
+  </div>
+
+  <div class="mt-4 mb-3">
+    <%= form.submit "Update Hunt Registration", class: "btn btn-success" %>
+    <%= link_to "Cancel", hunt_registration_path(@hunt_registration), class: "btn btn-outline-secondary ms-2" %>
+  </div>
+
+<% end %>
