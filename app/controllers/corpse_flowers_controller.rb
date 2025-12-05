@@ -17,8 +17,9 @@ class CorpseFlowersController < ApplicationController
       @corpse_flowers = @corpse_flowers.filter_by_putridity(putridity_levels)
     end
     
-    # Order by newest first
-    @corpse_flowers = @corpse_flowers.order(created_at: :desc)
+    # Apply sorting (M2 PR2 - US05)
+    sort_option = params[:sort].presence || 'newest'
+    @corpse_flowers = @corpse_flowers.apply_sort(sort_option)
     
     # Get available filter options (M2 PR1)
     @available_sizes = %w[small medium large]
@@ -28,6 +29,20 @@ class CorpseFlowersController < ApplicationController
       { label: 'Moderate (4-6)', value: '4-6' },
       { label: 'Strong (7-10)', value: '7-10' }
     ]
+    
+    # Get available sort options (M2 PR2 - US05)
+    @sort_options = [
+      { label: 'Newest First', value: 'newest' },
+      { label: 'Price: Low to High', value: 'price_asc' },
+      { label: 'Price: High to Low', value: 'price_desc' },
+      { label: 'Size: Small to Large', value: 'size_asc' },
+      { label: 'Size: Large to Small', value: 'size_desc' },
+      { label: 'Putridity: Low to High', value: 'putridity_asc' },
+      { label: 'Putridity: High to Low', value: 'putridity_desc' }
+    ]
+    
+    # Current sort option for view
+    @current_sort = sort_option
   end
 
   def show
