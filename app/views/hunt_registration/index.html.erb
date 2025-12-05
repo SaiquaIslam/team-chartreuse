@@ -48,6 +48,19 @@
                         class: 'btn btn-success btn-sm' %>
           </td>
 
+          <% if current_user == hunt.user %>
+            </td>
+                    <td class="text-nowrap">
+              <%= link_to 'Update Hunt', edit_hunt_registration_path(hunt),
+                          class: 'btn btn-success btn-sm' %>
+            </td>
+            </td>
+                    <td class="text-nowrap">
+              <%= link_to 'Remove from Hunt', confirm_remove_hunt_registration_path(hunt),
+                          class: 'btn btn-danger me-3' %>
+            </td>
+          <% end %>
+
         </tr>
       <% end %>
     </tbody>

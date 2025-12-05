@@ -48,6 +48,10 @@ Rails.application.routes.draw do
   get  "hunt_registration/new", to: "hunt_registration#new",    as: "new_hunt_registration"
   post "hunt_registration",     to: "hunt_registration#create", as: "hunt_registrations"
   get  "hunt_registration/:id", to: "hunt_registration#show",   as: "hunt_registration_show"
+  get  "hunt_registration/:id/edit", to: "hunt_registration#edit", as: "edit_hunt_registration"
+  patch "hunt_registration/:id", to: "hunt_registration#update", as: "hunt_registration"
+  get  "hunt_registration/:id/remove", to: "hunt_registration#confirm_remove", as: "confirm_remove_hunt_registration"
+  delete "hunt_registration/:id", to: "hunt_registration#destroy", as: "delete_hunt_registration"
 
    
   #root "hunt_registration#new"
