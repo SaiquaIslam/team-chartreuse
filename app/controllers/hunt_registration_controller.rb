@@ -1,5 +1,9 @@
 class HuntRegistrationController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+before_action :set_hunt_registration, only: [:show, :edit, :update, :destroy, :confirm_remove]
+before_action :authorize_owner!, only: [:edit, :update, :destroy, :confirm_remove]
+
+
   def index
   @hunt_registrations = HuntRegistration.order(created_at: :desc)
   render :index
@@ -38,7 +42,49 @@ end
     end
   end
 
+  def edit
+    @hunt_registration = HuntRegistration.find(params[:id])
+  end
+
+def update
+  @hunt_registration = HuntRegistration.find(params[:id])
+  if @hunt_registration.update(hunt_registration_params)
+    flash[:success] = "Hunt registration updated successfully."
+    redirect_to hunt_registration_path(@hunt_registration)
+  else
+    flash.now[:error] = "Unable to update hunt registration."
+    render :edit, status: :unprocessable_entity
+  end
+end
+
+def confirm_remove
+  @hunt_registration = HuntRegistration.find(params[:id])
+  render :remove
+end
+
+def destroy
+  @hunt_registration = HuntRegistration.find(params[:id])
+  @hunt_registration.destroy
+
+  flash[:success] = 'Flower was removed from the scavenger hunt.'
+  redirect_to hunt_path 
+end
+
+
   private
+
+  def set_hunt_registration
+    @hunt_registration = HuntRegistration.find(params[:id])
+  end
+
+  def authorize_owner!
+    return if @hunt_registration.user == current_user
+
+    flash[:alert] = "You are not authorized to modify this hunt registration."
+    redirect_to hunt_registration_path(@hunt_registration)
+  end
+
+
 
   def hunt_registration_params
     params.require(:hunt_registration).permit(
