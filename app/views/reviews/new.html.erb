@@ -16,11 +16,9 @@
 <% end %>
 
 <%= form_with model: [@corpse_flower, @review], local: true, html: { multipart: true, id: "review-form" } do |f| %>
-  <!-- ⭐ Rating with hover + click stars -->
   <div class="mb-3">
     <%= f.label :rating, "Rating" %><br>
 
-    <!-- Hidden field that actually stores the numeric rating -->
     <%= f.hidden_field :rating, id: "review_rating" %>
 
     <div id="star-rating" style="font-size: 2rem; cursor: pointer;">
@@ -34,29 +32,27 @@
         </span>
       <% end %>
     </div>
+
     <small class="form-text text-muted">
       Click a star to set your rating.
     </small>
   </div>
 
-  <!-- Title -->
   <div class="mb-3">
     <%= f.label :title, "Title" %>
     <%= f.text_field :title, class: "form-control", required: true %>
   </div>
 
-  <!-- Comment -->
   <div class="mb-3">
     <%= f.label :comment, "Review" %>
     <%= f.text_area :comment, class: "form-control", rows: 5, required: true %>
   </div>
 
-  <!-- 📷 File upload instead of URL -->
   <div class="mb-3">
     <%= f.label :image, "Photo (optional)" %><br>
     <%= f.file_field :image, accept: "image/*" %>
     <small class="form-text text-muted">
-      Choose an image file from your device.
+      Upload an image from your device.
     </small>
   </div>
 
@@ -64,25 +60,27 @@
   <%= link_to "Cancel", @corpse_flower, class: "btn btn-secondary ms-2" %>
 <% end %>
 
-<!-- ⭐ Star rating JavaScript -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const starsContainer = document.getElementById("star-rating");
-    const stars = starsContainer.querySelectorAll(".star");
-    const ratingInput = document.getElementById("review_rating");
+<style>
+  #star-rating .star {
+    color: #ccc; /* default grey before hover/click */
+    transition: color 0.2s ease;
+  }
+</style>
 
-    // If there's an existing rating (e.g., validation error re-render), use it
+<script>
+  function initReviewStars() {
+    const starsContainer = document.getElementById("star-rating");
+    const ratingInput = document.getElementById("review_rating");
+    if (!starsContainer || !ratingInput) return;
+
+    const stars = starsContainer.querySelectorAll(".star");
     let currentRating = parseInt(ratingInput.value || "0", 10);
 
     function renderStars(hoverValue = 0) {
       const activeValue = hoverValue || currentRating;
       stars.forEach((star) => {
         const value = parseInt(star.dataset.value, 10);
-        if (value <= activeValue) {
-          star.style.color = "#f5c518"; // gold-ish
-        } else {
-          star.style.color = "#ccc";
-        }
+        star.style.color = value <= activeValue ? "#f5c518" : "#ccc";
       });
     }
 
@@ -103,7 +101,9 @@
       });
     });
 
-    // Initial render (e.g., edit or error re-render)
     renderStars();
-  });
+  }
+
+  document.addEventListener("DOMContentLoaded", initReviewStars);
+  document.addEventListener("turbo:load", initReviewStars);
 </script>
