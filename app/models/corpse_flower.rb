@@ -22,11 +22,6 @@
 #  index_corpse_flowers_on_name    (name)
 #  index_corpse_flowers_on_status  (status)
 #
-#  index_corpse_flowers_on_name    (name)
-#  index_corpse_flowers_on_status  (status)
-# associations should be defined here
-
-
 
 # CorpseFlower Model
 class CorpseFlower < ApplicationRecord
@@ -82,6 +77,46 @@ class CorpseFlower < ApplicationRecord
   end
 
   ############################################################
+  # Sort Scopes (M2 PR2 - US05)
+  ############################################################
+  
+  # Price sorting
+  scope :sort_by_price_asc, -> { order(price: :asc) }
+  scope :sort_by_price_desc, -> { order(price: :desc) }
+  
+  # Putridity sorting
+  scope :sort_by_putridity_asc, -> { order(putridity: :asc) }
+  scope :sort_by_putridity_desc, -> { order(putridity: :desc) }
+  
+  # Newest first (default)
+  scope :sort_by_newest, -> { order(created_at: :desc) }
+  
+  # Size sorting - Custom SQL CASE for proper ordering (small < medium < large)
+  scope :sort_by_size_asc, -> {
+    order(Arel.sql("CASE 
+      WHEN size = 'small' THEN 1 
+      WHEN size = 'medium' THEN 2 
+      WHEN size = 'large' THEN 3 
+    END"))
+  }
+  
+  scope :sort_by_size_desc, -> {
+    order(Arel.sql("CASE 
+      WHEN size = 'large' THEN 1 
+      WHEN size = 'medium' THEN 2 
+      WHEN size = 'small' THEN 3 
+    END"))
+  }
+
+  ############################################################
+  # Search Scope
+  ############################################################
+  scope :search, ->(term) {
+    where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
+          "%#{term.downcase}%", "%#{term.downcase}%") if term.present?
+  }
+
+  ############################################################
   # Distinct values for sidebar filtering
   ############################################################
   def self.distinct_colors
@@ -97,12 +132,30 @@ class CorpseFlower < ApplicationRecord
   end
 
   ############################################################
-  # Search Scope
+  # Class Methods (M2 PR2 - US05)
   ############################################################
-  scope :search, ->(term) {
-    where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
-          "%#{term.downcase}%", "%#{term.downcase}%") if term.present?
-  }
+  
+  # Apply sorting based on sort parameter
+  def self.apply_sort(sort_option)
+    case sort_option
+    when 'price_asc'
+      sort_by_price_asc
+    when 'price_desc'
+      sort_by_price_desc
+    when 'size_asc'
+      sort_by_size_asc
+    when 'size_desc'
+      sort_by_size_desc
+    when 'putridity_asc'
+      sort_by_putridity_asc
+    when 'putridity_desc'
+      sort_by_putridity_desc
+    when 'newest'
+      sort_by_newest
+    else
+      sort_by_newest # default
+    end
+  end
 
   ############################################################
   # Instance Methods
@@ -122,10 +175,6 @@ class CorpseFlower < ApplicationRecord
   ############################################################
   # Callbacks
   ############################################################
-
-
-
-
 
   # Sajal (M2 PR1)
   # Prevent deleting a flower if it appears in any active cart
