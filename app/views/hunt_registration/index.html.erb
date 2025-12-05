@@ -1,5 +1,36 @@
 <h1 class="my-4">Scavenger Hunt – Registered Flowers</h1>
 
+<div class="container my-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <%= form_with url: hunt_path, method: :get, local: true, class: "row gy-2 align-items-center" do %>
+
+        <div class="col-md-8">
+          <%= text_field_tag :query, params[:query],
+                class: "form-control form-control-lg rounded-pill px-4",
+                placeholder: "🔍 Search flowers by nickname, location, or owner..." %>
+        </div>
+
+        <div class="col-md-2 text-md-end text-center">
+          <%= submit_tag "Search",
+                class: "btn btn-success btn-lg rounded-pill w-100" %>
+        </div>
+
+        <% if params[:query].present? %>
+          <div class="col-md-2 text-md-start text-center">
+            <%= link_to "Clear",
+                  hunt_path,
+                  class: "btn btn-outline-secondary btn-lg rounded-pill w-100" %>
+          </div>
+        <% end %>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
 <div class="table-responsive">
   <table class="table table-striped table-hover align-middle">
     <thead>

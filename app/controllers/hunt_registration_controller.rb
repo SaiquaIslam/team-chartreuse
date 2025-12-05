@@ -3,11 +3,21 @@ before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destro
 before_action :set_hunt_registration, only: [:show, :edit, :update, :destroy, :confirm_remove]
 before_action :authorize_owner!, only: [:edit, :update, :destroy, :confirm_remove]
 
-
-  def index
-  @hunt_registrations = HuntRegistration.order(created_at: :desc)
-  render :index
+def index
+  if params[:query].present?
+    q = "%#{params[:query]}%"
+    @hunt_registrations = HuntRegistration
+      .left_joins(:user)
+      .where("hunt_registrations.nickname ILIKE ?
+              OR hunt_registrations.location_description ILIKE ?
+              OR users.email ILIKE ?",
+              q, q, q)
+      .order(created_at: :desc)
+  else
+    @hunt_registrations = HuntRegistration.order(created_at: :desc)
+  end
 end
+
   def show
     @hunt_registration = HuntRegistration.find(params[:id])
     @order_item        = @hunt_registration.order_item
