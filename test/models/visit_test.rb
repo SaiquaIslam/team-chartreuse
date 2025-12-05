@@ -1,0 +1,29 @@
+# == Schema Information
+#
+# Table name: visits
+#
+#  id                   :bigint           not null, primary key
+#  comment              :text
+#  visited_on           :date
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  hunt_registration_id :bigint           not null
+#  user_id              :bigint           not null
+#
+# Indexes
+#
+#  index_visits_on_hunt_registration_id  (hunt_registration_id)
+#  index_visits_on_user_id               (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (hunt_registration_id => hunt_registrations.id)
+#  fk_rails_...  (user_id => users.id)
+#
+require "test_helper"
+
+class VisitTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end

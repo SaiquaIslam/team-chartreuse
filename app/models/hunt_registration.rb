@@ -27,6 +27,7 @@ class HuntRegistration < ApplicationRecord
    belongs_to :user
     belongs_to :order_item, optional: true
     has_one_attached :photo
+    has_many :visits, dependent: :destroy
 
   validates :nickname, presence: true
   validates :location_description, presence: true

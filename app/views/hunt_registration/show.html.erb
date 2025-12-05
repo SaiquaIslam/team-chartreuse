@@ -74,13 +74,56 @@
 </div>
 
 
-<!-- Visit gallery -->
+<!-- Visit Gallery -->
 <div class="card mb-4">
   <div class="card-body">
-    <h5 class="card-title mb-3">Visit Gallery (Coming Soon)</h5>
-    <p class="text-muted">This area will be implemented in M2.</p>
+    <h5 class="card-title mb-3">Visit Gallery</h5>
+
+    <% if @visits.present? %>
+      <div class="row">
+        <% @visits.each do |visit| %>
+          <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+              
+              <% if visit.photo.attached? %>
+                <%= image_tag visit.photo,
+                              alt: "Visit photo",
+                              class: "img-fluid rounded-top",
+                              style: "height: 160px; object-fit: cover;" %>
+              <% else %>
+                <div class="d-flex align-items-center justify-content-center bg-light"
+                     style="height: 160px;">
+                  <span class="text-muted">No Photo</span>
+                </div>
+              <% end %>
+
+              <div class="card-body p-2">
+                <small class="text-muted">
+                  Visited by: <%= visit.user.email %><br>
+                  <%= time_ago_in_words(visit.created_at) %> ago
+                  
+                </small>
+
+                <p class="mt-2 mb-0">Visited on :<%= visit.visited_on %></p>
+
+                <% if visit.comment.present? %>
+                  <p class="mt-2 mb-0"><%= visit.comment %></p>
+                <% end %>
+              </div>
+
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    <% else %>
+      <p class="text-muted mb-0">
+        No visits recorded yet — be the first!
+      </p>
+    <% end %>
   </div>
 </div>
+
 
 
 <p>
