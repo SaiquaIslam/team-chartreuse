@@ -5,7 +5,7 @@
                         method: :post,
                         data: { turbo: false },
                         html: { id: "hunt-registration-form", multipart: true } do |form| %>
-
+  <%= form.hidden_field :order_item_id %>
   <!-- STEP 1: Confirm registration (always visible) -->
   <div id="confirm-step" class="card p-4 mb-4">
     <h2 class="h5 mb-3">Confirm Registration</h2>

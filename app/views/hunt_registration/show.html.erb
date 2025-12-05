@@ -18,100 +18,70 @@
     <% end %>
   </div>
 
-  <!-- RIGHT: Flower specs / owner / order -->
+  <!-- RIGHT: Flower & Owner only -->
   <div class="col-md-7">
-    <!-- Owner -->
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title mb-3">Flower & Owner</h5>
 
         <% if @corpse_flower.present? %>
-          <p class="mb-1">
-            <strong>Flower:</strong>
-            <%= @corpse_flower.name %>
-          </p>
-          <p class="mb-1">
-            <strong>Putridity:</strong>
-            <%= @corpse_flower.putridity %>
-          </p>
-          <p class="mb-1">
-            <strong>Color:</strong>
-            <%= @corpse_flower.color %>
-          </p>
-          <p class="mb-3">
-            <strong>Size:</strong>
-            <%= @corpse_flower.size %>
-          </p>
+          <p><strong>Flower:</strong> <%= @corpse_flower.name %></p>
+          <p><strong>Putridity:</strong> <%= @corpse_flower.putridity %></p>
+          <p><strong>Color:</strong> <%= @corpse_flower.color %></p>
+          <p><strong>Size:</strong> <%= @corpse_flower.size %></p>
         <% else %>
-          <p class="text-muted mb-3">
-            Flower specs (size, putridity, etc.) are not linked to a purchase
-            for this registration yet.
-          </p>
+          <p class="text-muted mb-3">Flower specs are not linked yet.</p>
         <% end %>
 
-        <p class="mb-1">
-          <strong>Nickname:</strong>
-          <%= @hunt_registration.nickname.presence || "(No nickname)" %>
-        </p>
-
-        <p class="mb-0">
-          <strong>Owner:</strong>
-          <% if @hunt_registration.user.present? %>
-            <%= @hunt_registration.user.email %>
-          <% else %>
-            (Unknown owner)
-          <% end %>
+        <p><strong>Nickname:</strong> <%= @hunt_registration.nickname.presence || "(No nickname)" %></p>
+        <p><strong>Owner:</strong>
+          <%= @hunt_registration.user&.email || "(Unknown owner)" %>
         </p>
       </div>
     </div>
+  </div>
+</div> <!-- END ROW -->
 
- 
+
+<!-- NOW BELOW BOTH COLUMNS -->
+
+
 <!-- Location block -->
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title mb-3">Location</h5>
 
-    <p class="mb-1">
-      <strong>Address or Place:</strong><br>
+    <p><strong>Address or Place:</strong><br>
       <%= @hunt_registration.location_description.presence || "(No location provided)" %>
     </p>
 
     <% if @hunt_registration.latitude.present? && @hunt_registration.longitude.present? %>
-      <p class="mb-0">
-        <strong>Coordinates:</strong>
-        <%= @hunt_registration.latitude %>,
-        <%= @hunt_registration.longitude %>
+      <p><strong>Coordinates:</strong>
+        <%= @hunt_registration.latitude %>, <%= @hunt_registration.longitude %>
       </p>
     <% end %>
   </div>
 </div>
+
 
 <!-- Visiting instructions -->
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title mb-3">Visiting Instructions</h5>
-
-    <% if @hunt_registration.instructions.present? %>
-      <p class="mb-0">
-        <%= simple_format(@hunt_registration.instructions) %>
-      </p>
-    <% else %>
-      <p class="text-muted mb-0">
-        No visiting instructions have been provided yet.
-      </p>
-    <% end %>
+    <%= simple_format(@hunt_registration.instructions.presence ||
+          "No visiting instructions have been provided yet.") %>
   </div>
 </div>
 
-<!-- Placeholder for visit gallery -->
+
+<!-- Visit gallery -->
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title mb-3">Visit Gallery (Coming Soon)</h5>
-    <p class="text-muted mb-0">
-      This area will be implemented in M2 for visit photos and comments.
-    </p>
+    <p class="text-muted">This area will be implemented in M2.</p>
   </div>
 </div>
+
 
 <p>
   <%= link_to "Back to Hunt List", hunt_path, class: "btn btn-outline-secondary" %>
