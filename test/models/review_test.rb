@@ -4,6 +4,7 @@
 #
 #  id               :bigint           not null, primary key
 #  comment          :text             not null
+#  flagged          :boolean          default(FALSE)
 #  photo            :string
 #  rating           :integer          not null
 #  title            :string           not null
