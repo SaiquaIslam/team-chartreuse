@@ -11,9 +11,15 @@
               <div class="row align-items-center">
                 <!-- Flower Image -->
                 <div class="col-md-2">
-                  <%= image_tag item.corpse_flower.image_url, 
-                                alt: item.corpse_flower.name,
-                                style: "width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" %>
+                  <% if item.corpse_flower.images.attached? %>
+                    <%= image_tag url_for(item.corpse_flower.images.first), 
+                                  alt: item.corpse_flower.name,
+                                  style: "width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" %>
+                  <% elsif item.corpse_flower.image_url.present? %>
+                    <%= image_tag item.corpse_flower.image_url, 
+                                  alt: item.corpse_flower.name,
+                                  style: "width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" %>
+                  <% end %>
                 </div>
 
                 <!-- Flower Details -->
@@ -23,27 +29,61 @@
                                 style: "text-decoration: none; color: #333;" %>
                   </h6>
                   <small class="text-muted">
-                    <%= item.corpse_flower.size %> - <%= item.corpse_flower.putridity %>
+                    <%= item.corpse_flower.size.capitalize %> - Putridity: <%= item.corpse_flower.putridity %>
                   </small>
                   <div class="mt-2">
                     <strong style="color: #3d7e3d;"><%= item.corpse_flower.display_price %></strong>
                   </div>
-                </div>
-
-                <!-- Quantity Controls (US09 - Coming later) -->
-                <div class="col-md-3">
-                  <div class="input-group input-group-sm" style="width: 120px;">
-                    <button class="btn btn-outline-secondary" type="button" disabled>-</button>
-                    <input type="text" class="form-control text-center" value="<%= item.quantity %>" readonly>
-                    <button class="btn btn-outline-secondary" type="button" disabled>+</button>
+                  <div class="mt-1">
+                    <small class="text-muted">Subtotal: <strong><%= sprintf('$%.2f', item.subtotal) %></strong></small>
                   </div>
                 </div>
 
-                <!-- Remove Button (US08 - Coming later) -->
+                <!-- Quantity Controls (M2 PR3 - US09) -->
+                <div class="col-md-3">
+                  <div class="d-flex align-items-center" style="gap: 8px;">
+                    <!-- Decrease Quantity Button -->
+                    <%= button_to '-', 
+                        cart_item_path(item), 
+                        method: :patch, 
+                        params: { quantity: item.quantity - 1 },
+                        class: "btn btn-sm btn-outline-secondary",
+                        style: "width: 32px;",
+                        form: { style: "display: inline;" } %>
+                    
+                    <!-- Quantity Display -->
+                    <input type="text" 
+                           class="form-control form-control-sm text-center" 
+                           value="<%= item.quantity %>" 
+                           readonly
+                           style="width: 50px;">
+                    
+                    <!-- Increase Quantity Button -->
+                    <%= button_to '+', 
+                        cart_item_path(item), 
+                        method: :patch, 
+                        params: { quantity: item.quantity + 1 },
+                        class: "btn btn-sm btn-outline-secondary",
+                        style: "width: 32px;",
+                        form: { style: "display: inline;" },
+                        disabled: item.quantity >= item.corpse_flower.stock %>
+                  </div>
+                  
+                  <!-- Stock Warning -->
+                  <% if item.quantity >= item.corpse_flower.stock %>
+                    <small class="text-warning d-block mt-1">Max stock reached</small>
+                  <% end %>
+                </div>
+
+                <!-- Remove Button (M2 PR3 - US08) -->
                 <div class="col-md-2 text-end">
-                  <button class="btn btn-sm btn-outline-danger" disabled title="Remove item (Coming later)">
-                    <i class="bi bi-trash"></i> 🗑️
-                  </button>
+                  <%= button_to cart_item_path(item), 
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger",
+                      data: { turbo_confirm: "Remove #{item.corpse_flower.name} from cart?" },
+                      form: { style: "display: inline;" } do %>
+                    🗑️ Remove
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -59,8 +99,8 @@
           </div>
           <div class="card-body">
             <div class="d-flex justify-content-between mb-2">
-              <span>Subtotal:</span>
-              <span><strong><%= sprintf('$%.2f', @cart.total_price) %></strong></span>
+              <span>Items (<%= @cart.total_items %>):</span>
+              <span><strong><%= sprintf('$%.2f', @cart.calculate_total) %></strong></span>
             </div>
             <div class="d-flex justify-content-between mb-2">
               <span>Shipping:</span>
@@ -70,13 +110,13 @@
             <div class="d-flex justify-content-between mb-3">
               <strong>Total:</strong>
               <strong style="color: #3d7e3d; font-size: 1.2em;">
-                <%= sprintf('$%.2f', @cart.total_price) %>
+                <%= sprintf('$%.2f', @cart.calculate_total) %>
               </strong>
             </div>
             
             <%= link_to 'Proceed to Checkout', checkout_shipping_path, 
-            class: 'btn btn-success w-100 mb-2',
-            style: 'background-color: #3d7e3d; border-color: #3d7e3d;' %>
+                        class: 'btn btn-success w-100 mb-2',
+                        style: 'background-color: #3d7e3d; border-color: #3d7e3d;' %>
             
             <%= link_to 'Continue Shopping', corpse_flowers_path, 
                         class: 'btn btn-outline-secondary w-100' %>

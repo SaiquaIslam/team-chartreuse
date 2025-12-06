@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   # Cart System (Tanvir PR3)
   resource :cart, only: [:show]
-  resources :cart_items, only: [:create]
+  resources :cart_items, only: [:create, :update, :destroy]
 
   # Checkout - PR1/PR2/PR3
   namespace :checkout do
