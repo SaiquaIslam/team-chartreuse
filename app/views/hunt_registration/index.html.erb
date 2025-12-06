@@ -90,8 +90,14 @@
               <%= link_to 'Remove from Hunt', confirm_remove_hunt_registration_path(hunt),
                           class: 'btn btn-danger me-3' %>
             </td>
+
           <% end %>
 
+                      </td>
+                    <td class="text-nowrap">
+              <%= link_to "Record My Visit", new_hunt_registration_visit_path(hunt), class: "btn btn-sm btn-primary" if user_signed_in? %>
+            </td>
+        
         </tr>
       <% end %>
     </tbody>

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   # Cart System (Tanvir PR3)
   resource :cart, only: [:show]
-  resources :cart_items, only: [:create]
+  resources :cart_items, only: [:create, :update, :destroy]
 
   # Checkout - PR1/PR2/PR3
   namespace :checkout do
@@ -53,6 +53,15 @@ Rails.application.routes.draw do
   get  "hunt_registration/:id/remove", to: "hunt_registration#confirm_remove", as: "confirm_remove_hunt_registration"
   delete "hunt_registration/:id", to: "hunt_registration#destroy", as: "delete_hunt_registration"
 
+  # Visit Routes (Manual Style like HuntRegistration)
+get  "hunt_registration/:hunt_registration_id/visit/new",  to: "visits#new", as: "new_hunt_registration_visit"
+
+post "hunt_registration/:hunt_registration_id/visit", to: "visits#create", as: "hunt_registration_visits"
+
+# Leaderboard Route
+get "leaderboard", to: "visits#leaderboard", as: "leaderboard"
+
+
    
   #root "hunt_registration#new"
   # Defines the root path route ("/")
@@ -85,5 +94,6 @@ Rails.application.routes.draw do
   resources :moderations, only: [:index, :destroy]
 
 end
+
 
 end

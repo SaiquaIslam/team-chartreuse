@@ -1,0 +1,49 @@
+<h1 class="my-4 text-success text-center">📍 Record My Visit</h1>
+
+<div class="card shadow-sm mx-auto" style="max-width: 600px;">
+  <div class="card-body">
+
+    <%= form_with model: [@hunt_registration, @visit],
+                  local: true,
+                  html: { multipart: true } do |f| %>
+
+      <!-- Photo Upload -->
+      <div class="mb-3">
+        <%= f.label :photo, "Upload Visit Photo", class: "form-label fw-bold" %>
+        <%= f.file_field :photo, class: "form-control", required: true %>
+      </div>
+
+      <!-- Comment -->
+      <div class="mb-3">
+        <%= f.label :comment, "Comment (optional)", class: "form-label fw-bold" %>
+        <%= f.text_area :comment,
+                        rows: 3,
+                        placeholder: "Share your experience!",
+                        class: "form-control" %>
+      </div>
+
+      <!-- Visit Date -->
+      <div class="mb-3">
+        <%= f.label :visited_on, "Date of Visit", class: "form-label fw-bold" %>
+        <%= f.date_field :visited_on, class: "form-control",
+                         value: Date.today %>
+        <small class="text-muted">
+          Default is today — change if needed.
+        </small>
+      </div>
+
+      <div class="text-center">
+        <%= f.submit "Submit Visit",
+                     class: "btn btn-success px-4 mt-3" %>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
+
+<div class="text-center mt-3">
+  <%= link_to "Back",
+              hunt_registration_path(@hunt_registration),
+              class: "btn btn-outline-secondary" %>
+</div>

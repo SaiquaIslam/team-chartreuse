@@ -145,6 +145,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_06_025708) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "visits", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comment"
+    t.bigint "hunt_registration_id", null: false
+    t.bigint "user_id", null: false
+    t.date "visited_on"
+    t.index ["hunt_registration_id"], name: "index_visits_on_hunt_registration_id"
+    t.index ["user_id"], name: "index_visits_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
@@ -157,4 +168,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_06_025708) do
   add_foreign_key "orders", "users"
   add_foreign_key "reviews", "corpse_flowers"
   add_foreign_key "reviews", "users"
+  add_foreign_key "visits", "hunt_registrations"
+  add_foreign_key "visits", "users"
 end
