@@ -22,6 +22,8 @@ end
     @hunt_registration = HuntRegistration.find(params[:id])
     @order_item        = @hunt_registration.order_item
     @corpse_flower     = @order_item&.corpse_flower
+    @visits = @hunt_registration.visits.includes(:user, photo_attachment: :blob).order(created_at: :desc)
+
   end
 
   def new

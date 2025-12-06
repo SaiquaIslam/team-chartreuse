@@ -1,0 +1,46 @@
+<h1 class="my-4 text-center text-success">
+  🏆 Scavenger Hunt Leaderboard
+</h1>
+
+<p class="text-center text-muted mb-4">
+  Top corpse-flower hunters ranked by total visits!
+</p>
+
+<div class="card shadow-sm mx-auto" style="max-width: 700px;">
+  <div class="card-body p-0">
+
+    <table class="table mb-0 align-middle text-center">
+      <thead class="table-success">
+        <tr>
+          <th>#</th>
+          <th>Visitor</th>
+          <th>Visits</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @leaderboard.each_with_index do |entry, index| %>
+          <tr>
+            <td class="fw-bold">
+              <%# Award medal icons to top 3 %>
+              <% if index == 0 %> 1 <% elsif index == 1 %> 2 <% elsif index == 2 %> 3 <% else %>
+                <%= index + 1 %>
+              <% end %>
+            </td>
+            <td>
+              <span class="fw-semibold"><%= entry.email %></span>
+            </td>
+            <td class="fw-bold"><%= entry.visits_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <%= link_to "Back to Hunts",
+              hunt_path,
+              class: "btn btn-outline-success px-4" %>
+</div>
