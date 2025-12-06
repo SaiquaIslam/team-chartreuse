@@ -11,6 +11,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  role                   :integer          default("customer")
+#  suspended              :boolean          default(FALSE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -34,5 +35,16 @@ class User < ApplicationRecord
 
     has_many :orders, dependent: :nullify
     has_many :visits
+
+
+
+def active_for_authentication?
+  super && !suspended?
+end
+
+def inactive_message
+  suspended? ? :suspended : super
+end
+
 
 end

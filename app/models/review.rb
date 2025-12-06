@@ -4,6 +4,7 @@
 #
 #  id               :bigint           not null, primary key
 #  comment          :text             not null
+#  flagged          :boolean          default(FALSE)
 #  photo            :string
 #  rating           :integer          not null
 #  title            :string           not null
@@ -39,4 +40,28 @@ class Review < ApplicationRecord
   }
 
   # 👇 NOTE: no extra “must have purchased” validation here.
+
+# Sajal M2 PR3 - Add flagging functionality to reviews 
+
+BAD_WORDS = %w[
+  fuck shit suck idiot stupid scam fraud kill hate trash garbage money job
+].freeze
+
+  # Automatically flag review if it contains forbidden words
+  before_save :auto_flag_bad_words
+
+  private
+
+  def auto_flag_bad_words
+    return if comment.blank?
+
+    lowered_comment = comment.downcase
+
+    if BAD_WORDS.any? { |word| lowered_comment.include?(word) }
+      self.flagged = true
+    end
+  end
+
+
+
 end

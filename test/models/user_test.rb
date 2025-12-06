@@ -11,6 +11,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  role                   :integer          default("customer")
+#  suspended              :boolean          default(FALSE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

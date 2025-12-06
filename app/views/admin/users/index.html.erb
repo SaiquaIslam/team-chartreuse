@@ -1,0 +1,46 @@
+<h1 class="fw-bold mb-4">Manage Users</h1>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Role</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email.split("@").first %></td>
+        <td><%= user.email %></td>
+        <td>
+          <% if user.suspended? %>
+            <span class="badge bg-danger">Suspended</span>
+          <% else %>
+            <span class="badge bg-success">Active</span>
+          <% end %>
+        </td>
+        <td><%= user.role %></td>
+
+        <td class="text-center">
+          <% if user.suspended? %>
+            <%= link_to "Unsuspend",
+                 unsuspend_admin_user_path(user),
+                 data: { turbo_method: :patch },
+                 class: "btn btn-sm btn-danger" %>
+          <% else %>
+            <%= link_to "Suspend",
+                 suspend_admin_user_path(user),
+                 data: { turbo_method: :patch, turbo_confirm: "Suspend this user?" },
+                 class: "btn btn-sm btn-warning" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+ 
+ 

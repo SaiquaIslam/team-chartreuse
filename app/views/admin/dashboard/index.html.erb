@@ -1,6 +1,20 @@
 <div class="container mt-5">
 
   <h1 class="fw-bold mb-4 text-center">Admin Dashboard</h1>
+<div class="d-flex justify-content-center gap-3 mb-4">
+
+  <%= link_to "Manage Users",
+      admin_users_path,
+      class: "btn btn-primary px-4 py-2 shadow-sm fw-semibold",
+      style: "border-radius: 8px; font-size: 18px;" %>
+
+  <%= link_to "Moderate Content",
+      admin_moderations_path,
+      class: "btn px-4 py-2 shadow-sm fw-semibold",
+      style: "background-color:#F4A100; color:white; border-radius: 8px; font-size: 18px;" %>
+
+</div>
+
 
   <div class="row g-4 justify-content-center">
 
