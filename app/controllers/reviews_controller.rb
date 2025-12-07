@@ -32,6 +32,12 @@ class ReviewsController < ApplicationController
     @corpse_flower = CorpseFlower.find(params[:corpse_flower_id])
   end
 
+  def ensure_user_purchased_flower!
+    unless current_user.purchased_corpse_flower?(@corpse_flower)
+      redirect_to @corpse_flower, alert: "You can only review flowers you have purchased."
+    end
+  end
+
   def review_params
     params.require(:review).permit(:rating, :title, :comment, :image)
   end

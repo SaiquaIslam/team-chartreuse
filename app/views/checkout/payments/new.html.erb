@@ -2,13 +2,29 @@
   <div class="checkout-form">
     <h1>Payment Information</h1>
 
-    <%= form_with url: checkout_payment_path, method: :post, scope: :payment do |f| %>
+    <% if flash[:alert].present? %>
+      <p style="color: red; margin-bottom: 10px;"><%= flash[:alert] %></p>
+    <% end %>
+
+    <% if defined?(@errors) && @errors.present? %>
+      <div style="border: 1px solid red; padding: 10px; margin-bottom: 15px; color: red;">
+        <h4>There were problems with your payment details:</h4>
+        <ul>
+          <% @errors.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with url: checkout_payment_path, method: :post, scope: :payment, local: true do |f| %>
 
       <div class="form-group">
         <%= f.label :card_number, "Card Number" %>
         <%= f.text_field :card_number,
               value: @payment.try(:card_number),
-              class: "form-control" %>
+              class: "form-control",
+              required: true %>
       </div>
 
       <div class="form-group-inline">
@@ -16,14 +32,17 @@
           <%= f.label :expiry_month, "Expiry Month" %>
           <%= f.number_field :expiry_month,
                 value: @payment.try(:expiry_month),
-                class: "form-control" %>
+                class: "form-control",
+                required: true,
+                in: 1..12 %>
         </div>
 
         <div class="form-group small">
           <%= f.label :expiry_year, "Expiry Year" %>
           <%= f.number_field :expiry_year,
                 value: @payment.try(:expiry_year),
-                class: "form-control" %>
+                class: "form-control",
+                required: true %>
         </div>
       </div>
 
@@ -31,14 +50,17 @@
         <%= f.label :cvv, "CVV" %>
         <%= f.password_field :cvv,
               value: @payment.try(:cvv),
-              class: "form-control" %>
+              class: "form-control",
+              required: true,
+              maxlength: 4 %>
       </div>
 
       <div class="form-group">
         <%= f.label :billing_zip, "Billing ZIP" %>
         <%= f.text_field :billing_zip,
               value: @payment.try(:billing_zip),
-              class: "form-control" %>
+              class: "form-control",
+              required: true %>
       </div>
 
       <div class="form-actions" style="margin-top: 12px;">
