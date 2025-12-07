@@ -1,7 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3d7e3d;">
   <div class="container-fluid">
 
-    <%= link_to "Chartreuse", root_path, class: "navbar-brand fw-bold" %>
+      <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+        <%= image_tag "chartreuse-logo.png", 
+            alt: "Chartreuse", 
+            style: "height: 45px; width: 45px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 2.5px solid white;" %>
+        <span class="text-white" style="font-size: 1.4rem; font-weight: 600; letter-spacing: 2px; font-family: 'Georgia', serif;">Chartreuse</span>
+      <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
