@@ -1,0 +1,14 @@
+<p>You have received a new message from: <strong><%= @from_email %></strong></p>
+
+<% if @corpse_flower.present? %>
+  <p>
+    Regarding corpse flower:
+    <strong><%= @corpse_flower.name %></strong>
+    (ID: <%= @corpse_flower.id %>)
+  </p>
+<% end %>
+
+<hr>
+
+<p><strong>Message:</strong></p>
+<p><%= simple_format(@body) %></p>
