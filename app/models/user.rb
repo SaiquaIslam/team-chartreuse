@@ -34,6 +34,19 @@ class User < ApplicationRecord
     has_one :cart, dependent: :destroy
 
     has_many :orders, dependent: :nullify
+  def display_name
+    email.to_s.split("@").first
+  end
+
+  # Has this user ever purchased this specific corpse flower?
+  def purchased_corpse_flower?(corpse_flower)
+    Order.joins(:order_items)
+         .where(
+           user_id: id,
+           order_items: { corpse_flower_id: corpse_flower.id }
+         )
+         .exists?
+  end  
     has_many :visits
 
 

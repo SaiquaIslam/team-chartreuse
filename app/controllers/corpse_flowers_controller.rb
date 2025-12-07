@@ -47,6 +47,7 @@ class CorpseFlowersController < ApplicationController
 
   def show
     @corpse_flower = CorpseFlower.find(params[:id])
+    @reviews = @corpse_flower.reviews.includes(:user).order(created_at: :desc)
   rescue ActiveRecord::RecordNotFound
     redirect_to corpse_flowers_path, alert: 'Corpse flower not found.'
   end
