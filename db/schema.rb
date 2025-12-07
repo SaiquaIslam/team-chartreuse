@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_04_021553) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_06_025708) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -125,6 +125,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_021553) do
     t.bigint "corpse_flower_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "flagged", default: false
     t.index ["corpse_flower_id"], name: "index_reviews_on_corpse_flower_id"
     t.index ["user_id", "corpse_flower_id"], name: "index_reviews_on_user_id_and_corpse_flower_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
@@ -139,8 +140,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_021553) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role", default: 0
+    t.boolean "suspended", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comment"
+    t.bigint "hunt_registration_id", null: false
+    t.bigint "user_id", null: false
+    t.date "visited_on"
+    t.index ["hunt_registration_id"], name: "index_visits_on_hunt_registration_id"
+    t.index ["user_id"], name: "index_visits_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -155,4 +168,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_021553) do
   add_foreign_key "orders", "users"
   add_foreign_key "reviews", "corpse_flowers"
   add_foreign_key "reviews", "users"
+  add_foreign_key "visits", "hunt_registrations"
+  add_foreign_key "visits", "users"
 end

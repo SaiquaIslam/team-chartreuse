@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   # Cart System (Tanvir PR3)
   resource :cart, only: [:show]
-  resources :cart_items, only: [:create]
+  resources :cart_items, only: [:create, :update, :destroy]
 
   # Checkout - PR1/PR2/PR3
   namespace :checkout do
@@ -53,23 +53,47 @@ Rails.application.routes.draw do
   get  "hunt_registration/:id/remove", to: "hunt_registration#confirm_remove", as: "confirm_remove_hunt_registration"
   delete "hunt_registration/:id", to: "hunt_registration#destroy", as: "delete_hunt_registration"
 
+  # Visit Routes (Manual Style like HuntRegistration)
+get  "hunt_registration/:hunt_registration_id/visit/new",  to: "visits#new", as: "new_hunt_registration_visit"
+
+post "hunt_registration/:hunt_registration_id/visit", to: "visits#create", as: "hunt_registration_visits"
+
+# Leaderboard Route
+get "leaderboard", to: "visits#leaderboard", as: "leaderboard"
+
+
    
   #root "hunt_registration#new"
   # Defines the root path route ("/")
   # root "posts#index"
 
   ##################################################################
-  # Admin Routes (Sajal M1PR1, M2 PR2, M2 PR3)
+  # Admin Routes (Sajal M1PR1, M2 PR2, M2 PR3, M2 PR3)
   ##################################################################
   namespace :admin do
-    resources :corpse_flowers do
-      member do
+  # === Flowers ===
+  resources :corpse_flowers do
+    member do
       patch :increase_stock
       patch :decrease_stock
     end
   end
-  get "dashboard", to: "dashboard#index" 
 
-end 
+  # === Users (US29) ===
+  resources :users, only: [:index] do
+    member do
+      patch :suspend
+      patch :unsuspend
+    end
+  end
+
+  # === Dashboard ===
+  get "dashboard", to: "dashboard#index"
+
+# NEW for moderation
+  resources :moderations, only: [:index, :destroy]
+
+end
+
 
 end
