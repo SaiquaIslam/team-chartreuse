@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
 
+  resources :messages, only: [:new, :create]
+
   # Cart System (Tanvir PR3)
   resource :cart, only: [:show]
   resources :cart_items, only: [:create, :update, :destroy]

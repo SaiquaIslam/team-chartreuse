@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Contact Admin</h1>
+
+      <% if flash[:alert].present? %>
+        <p style="color: red; margin-bottom: 10px;"><%= flash[:alert] %></p>
+      <% end %>
+
+      <% if defined?(@errors) && @errors.present? %>
+        <div style="border: 1px solid red; padding: 10px; margin-bottom: 15px; color: red;">
+          <h4>There were problems with your message:</h4>
+          <ul>
+            <% @errors.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with url: messages_path(corpse_flower_id: @corpse_flower&.id),
+                    scope: :message,
+                    local: true do |f| %>
+
+        <div class="mb-3">
+          <%= f.label :email, "Your Email" %>
+          <%= f.email_field :email,
+                class: "form-control",
+                required: true,
+                value: @message.email %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :subject, "Subject" %>
+          <%= f.text_field :subject,
+                class: "form-control",
+                required: true,
+                value: @message.subject %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :body, "Message" %>
+          <%= f.text_area :body,
+                class: "form-control",
+                rows: 6,
+                required: true do %>
+            <%= @message.body %>
+          <% end %>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <%= f.submit "Send Message", class: "btn btn-primary" %>
+
+          <% if @corpse_flower %>
+            <%= link_to "Back to Flower",
+                        corpse_flower_path(@corpse_flower),
+                        class: "btn btn-secondary" %>
+          <% else %>
+            <%= link_to "Back", root_path, class: "btn btn-secondary" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
