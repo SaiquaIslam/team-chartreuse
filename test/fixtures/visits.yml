@@ -26,8 +26,4 @@
 #  fk_rails_...  (hunt_registration_id => hunt_registrations.id)
 #  fk_rails_...  (user_id => users.id)
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+# No visit fixtures needed for these tests

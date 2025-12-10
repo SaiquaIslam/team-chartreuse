@@ -69,3 +69,25 @@ medium_green:
   putridity: 6
   stock: 7
   status: available
+
+
+sold_out_flower:
+  name: Sold Out Specimen
+  description: Already sold out for testing
+  price: 150.00
+  size: small
+  color: yellow
+  putridity: 4
+  stock: 0
+  status: sold_out
+
+
+locked_flower:
+  name: Locked Flower
+  description: Cannot delete due to active order (test stub)
+  price: 300.00
+  size: medium
+  color: blue
+  putridity: 7
+  stock: 4
+  status: available

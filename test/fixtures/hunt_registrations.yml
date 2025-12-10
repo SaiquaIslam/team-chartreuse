@@ -25,20 +25,4 @@
 #  fk_rails_...  (order_item_id => order_items.id)
 #  fk_rails_...  (user_id => users.id)
 #
-one:
-  user: one
-  order_item: one
-  nickname: MyString
-  location_description: MyString
-  latitude: 9.99
-  longitude: 9.99
-  instructions: MyText
-
-two:
-  user: two
-  order_item: two
-  nickname: MyString
-  location_description: MyString
-  latitude: 9.99
-  longitude: 9.99
-  instructions: MyText
+# No hunt registration fixtures needed for tests

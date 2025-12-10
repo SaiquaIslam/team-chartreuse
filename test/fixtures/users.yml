@@ -24,8 +24,23 @@
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+# Sajal Testing Users
+admin:
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: 1        # assuming enum { customer: 0, admin: 1 }
+  suspended: false
+
+regular:
+  email: regular@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: 0
+  suspended: false
+
+suspended:
+  email: suspended@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: 0
+  suspended: true
+# Sajal Testing Users
+
