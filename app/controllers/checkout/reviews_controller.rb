@@ -17,9 +17,7 @@ module Checkout
       total_cents = 0
       if @cart && @cart.respond_to?(:cart_items) && @cart.cart_items.any?
         total_cents = @cart.cart_items.sum do |item|
-          price       = item.corpse_flower&.price || 0
-          price_cents = (price.to_f * 100).to_i
-          price_cents * item.quantity
+          price_cents_for(item) * item.quantity
         end
       end
 
@@ -39,19 +37,16 @@ module Checkout
       # 3) create order_items from the cart
       if @cart && @cart.respond_to?(:cart_items) && @cart.cart_items.any?
         @cart.cart_items.each do |item|
-          price       = item.corpse_flower&.price || 0
-          price_cents = (price.to_f * 100).to_i
-
           @order.order_items.create!(
             corpse_flower: item.corpse_flower,
             quantity:      item.quantity,
-            price_cents:   price_cents
+            price_cents:   price_cents_for(item)
           )
         end
 
         # clear cart after order
         @cart.cart_items.destroy_all
-        @cart.update_total! if @cart.respond_to?(:update_total!)
+        update_cart_total(@cart)
       end
 
       # 4) clear checkout session
@@ -64,12 +59,25 @@ module Checkout
 
     private
 
+    # NEW: centralize the price logic so we can test both branches
+    def price_cents_for(item)
+      price = item.corpse_flower&.price
+      return 0 if price.nil?
+
+      (price.to_f * 100).to_i
+    end
+
+    # NEW: centralize the respond_to? logic for testable branches
+    def update_cart_total(cart)
+      cart.update_total! if cart.respond_to?(:update_total!)
+    end
+
     def current_cart
       return nil unless current_user
+
       Cart.for_user(current_user)
     rescue
       nil
     end
   end
 end
-

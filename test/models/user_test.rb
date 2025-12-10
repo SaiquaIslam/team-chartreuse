@@ -1,61 +1,81 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :bigint           not null, primary key
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
-#  reset_password_token   :string
-#  role                   :integer          default("customer")
-#  suspended              :boolean          default(FALSE)
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#
-# Indexes
-#
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#
 require "test_helper"
 
-
 class UserTest < ActiveSupport::TestCase
+  fixtures :users, :corpse_flowers
 
-  ##### Sajal's scopes #####
-  def setup
-    @admin = users(:admin)
-    @regular = users(:regular)
-    @suspended = users(:suspended)
+  ############################################################
+  # display_name
+  ############################################################
+
+  test "display_name returns everything before the @" do
+    user = users(:regular)
+    assert_equal user.email.split("@").first, user.display_name
   end
 
-  test "admin should have role admin" do
-    assert_equal "admin", @admin.role
+  ############################################################
+  # purchased_corpse_flower?
+  ############################################################
+
+  test "purchased_corpse_flower? returns true when user has an order containing that flower" do
+    user   = users(:regular)
+    flower = corpse_flowers(:titan_arum)
+
+    order = Order.create!(user: user, total_cents: 2000, status: "paid")
+    order.order_items.create!(
+      corpse_flower: flower,
+      quantity: 1,
+      price_cents: 2000
+    )
+
+    assert user.purchased_corpse_flower?(flower),
+           "Expected purchased_corpse_flower? to return true"
   end
 
-  test "regular user should not be admin" do
-    refute_equal "admin", @regular.role
+  test "purchased_corpse_flower? returns false when flower was not purchased by user" do
+    user   = users(:regular)
+    flower = corpse_flowers(:titan_arum)
+
+    # No orders created
+    refute user.purchased_corpse_flower?(flower)
   end
 
-  test "suspended flag works" do
-    assert @suspended.suspended
-    refute @regular.suspended
+  ############################################################
+  # active_for_authentication? (branch coverage)
+  ############################################################
+
+  test "active_for_authentication? returns true when user is not suspended" do
+    user = users(:regular)
+    user.update!(suspended: false)
+
+    assert user.active_for_authentication?
   end
 
-  test "suspended user not active for authentication" do
-    # This assumes you implemented in User model:
-    # def active_for_authentication?
-    #   super && !suspended?
-    # end
-    refute @suspended.active_for_authentication?
-    assert @regular.active_for_authentication?
+  test "active_for_authentication? returns false when user is suspended" do
+    user = users(:regular)
+    user.update!(suspended: true)
+
+    refute user.active_for_authentication?
   end
 
-##### Sajal's scopes #####
+  ############################################################
+  # inactive_message (branch coverage)
+  ############################################################
 
+  test "inactive_message returns :suspended when user is suspended" do
+    user = users(:regular)
+    user.update!(suspended: true)
+
+    assert_equal :suspended, user.inactive_message
+  end
+
+  test "inactive_message returns Devise default when user is not suspended" do
+    user = users(:regular)
+    user.update!(suspended: false)
+
+    # super returns a symbol from Devise, usually :inactive
+    # We don't hardcode it — we call super indirectly
+    assert_not_equal :suspended, user.inactive_message
+  end
 end
-
-

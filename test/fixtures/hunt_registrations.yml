@@ -1,4 +1,4 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# test/fixtures/hunt_registrations.yml
 
 # == Schema Information
 #
@@ -25,4 +25,12 @@
 #  fk_rails_...  (order_item_id => order_items.id)
 #  fk_rails_...  (user_id => users.id)
 #
-# No hunt registration fixtures needed for tests
+
+campus_titan:
+  user: regular
+  nickname: "Campus Titan"
+  location_description: "Near the big fountain"
+  instructions: "Look around carefully and upload a picture."
+  latitude: 35.1200
+  longitude: -89.9400
+  order_item:

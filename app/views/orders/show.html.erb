@@ -6,7 +6,7 @@
 
 <p><strong>Date:</strong> <%= @order.created_at.strftime("%B %d, %Y") %></p>
 <p><strong>Status:</strong> <%= @order.status %></p>
-<p><strong>Total:</strong> <%= number_to_currency(@order.total_cents / 100.0) %></p>
+<p><strong>Total:</strong> <%= number_to_currency(@order.total_cents.to_f / 100.0) %></p>
 
 <h2>Shipping Information</h2>
 <p><strong>Name:</strong> <%= @order.shipping_name %></p>

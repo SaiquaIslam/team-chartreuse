@@ -36,7 +36,7 @@
               </span>
 
               <p class="fw-semibold mb-0 mt-2">
-                Total: <%= number_to_currency(order.total_cents / 100.0) %>
+                Total: <%= number_to_currency(order.total_cents.to_f / 100.0) %>
               </p>
             </div>
           </div>

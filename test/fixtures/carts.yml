@@ -19,6 +19,12 @@
 #  fk_rails_...  (user_id => users.id)
 #
 # No cart item fixtures needed for tests
-one_cart:
+# test/fixtures/carts.yml
+
+# test/fixtures/carts.yml
+
+# test/fixtures/carts.yml
+
+regular_cart:
   user: regular
-  total_price: 0
+  total_price: 0.0

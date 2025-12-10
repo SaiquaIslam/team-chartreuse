@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_corpse_flower
+  before_action :ensure_user_purchased_flower!, only: [:new, :create]
 
   # GET /corpse_flowers/:corpse_flower_id/reviews/new
   def new
