@@ -26,17 +26,18 @@ end
 
   end
 
-  def new
-    @hunt_registration = HuntRegistration.new
+def new
+  @hunt_registration = HuntRegistration.new
 
-    if params[:order_item_id].present?
-      @order_item    = OrderItem.find_by(id: params[:order_item_id])
-      @corpse_flower = @order_item.corpse_flower
-      @hunt_registration.order_item = @order_item
-    end
-
-    render :new
+  if params[:order_item_id].present?
+    @order_item    = OrderItem.find_by(id: params[:order_item_id])
+    @corpse_flower = @order_item&.corpse_flower
+    @hunt_registration.order_item = @order_item if @order_item.present?
   end
+
+  render :new
+end
+
 
   def create
     @hunt_registration = HuntRegistration.new(hunt_registration_params)
@@ -50,7 +51,8 @@ end
       @order_item    = @hunt_registration.order_item
       @corpse_flower = @order_item&.corpse_flower
       flash.now[:error] = "Unable to save registration."
-      render :new_hunt, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
+
     end
   end
 

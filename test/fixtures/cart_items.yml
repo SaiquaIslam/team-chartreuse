@@ -22,7 +22,13 @@
 #  fk_rails_...  (corpse_flower_id => corpse_flowers.id)
 #
 # No cart item fixtures needed for tests
-in_cart:
-  cart: one_cart
+# test/fixtures/cart_items.yml
+
+# test/fixtures/cart_items.yml
+
+# test/fixtures/cart_items.yml
+
+regular_cart_item:
+  cart: regular_cart
   corpse_flower: titan_arum
-  quantity: 1
+  quantity: 2
