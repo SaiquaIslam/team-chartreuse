@@ -21,12 +21,8 @@
 #  fk_rails_...  (cart_id => carts.id)
 #  fk_rails_...  (corpse_flower_id => corpse_flowers.id)
 #
-one:
-  cart: one
-  corpse_flower: one
-  quantity: 1
-
-two:
-  cart: two
-  corpse_flower: two
+# No cart item fixtures needed for tests
+in_cart:
+  cart: one_cart
+  corpse_flower: titan_arum
   quantity: 1

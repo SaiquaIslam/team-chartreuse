@@ -22,14 +22,4 @@
 #  fk_rails_...  (corpse_flower_id => corpse_flowers.id)
 #  fk_rails_...  (order_id => orders.id)
 #
-one:
-  order: one
-  corpse_flower: one
-  quantity: 1
-  price_cents: 1
-
-two:
-  order: two
-  corpse_flower: two
-  quantity: 1
-  price_cents: 1
+# No order item fixtures needed for tests

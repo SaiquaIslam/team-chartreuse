@@ -18,10 +18,7 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-one:
-  user: one
-  total_price: 9.99
-
-two:
-  user: two
-  total_price: 9.99
+# No cart item fixtures needed for tests
+one_cart:
+  user: regular
+  total_price: 0

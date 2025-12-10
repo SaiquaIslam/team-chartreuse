@@ -25,24 +25,4 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-one:
-  user: one
-  total_cents: 1
-  status: MyString
-  shipping_name: MyString
-  shipping_address: MyString
-  shipping_city: MyString
-  shipping_state: MyString
-  shipping_zip: MyString
-  shipping_phone: MyString
-
-two:
-  user: two
-  total_cents: 1
-  status: MyString
-  shipping_name: MyString
-  shipping_address: MyString
-  shipping_city: MyString
-  shipping_state: MyString
-  shipping_zip: MyString
-  shipping_phone: MyString
+# No order fixtures needed for tests

@@ -26,18 +26,33 @@
 #  fk_rails_...  (corpse_flower_id => corpse_flowers.id)
 #  fk_rails_...  (user_id => users.id)
 #
-one:
-  rating: 1
-  title: MyString
-  comment: MyText
-  photo: MyString
-  user: one
-  corpse_flower: one
 
-two:
+# Normal review (not flagged)
+normal:
+  rating: 4
+  title: "Great flower"
+  comment: "Smells terrible but looks amazing!"
+  photo: "normal_review.jpg"
+  user: regular
+  corpse_flower: titan_arum
+  flagged: false
+
+# Flagged review (used for moderation tests)
+flagged_review:
   rating: 1
-  title: MyString
-  comment: MyText
-  photo: MyString
-  user: two
-  corpse_flower: two
+  title: "Terrible experience"
+  comment: "This flower ruined my day."
+  photo: "flagged.jpg"
+  user: regular
+  corpse_flower: rafflesia
+  flagged: true
+
+# Another normal review (optional)
+secondary_review:
+  rating: 5
+  title: "Beautiful specimen"
+  comment: "Worth every penny!"
+  photo: "secondary_review.jpg"
+  user: admin
+  corpse_flower: small_purple
+  flagged: false

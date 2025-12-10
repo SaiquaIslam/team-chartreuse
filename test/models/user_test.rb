@@ -20,10 +20,42 @@
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
-require 'test_helper'
+require "test_helper"
+
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  ##### Sajal's scopes #####
+  def setup
+    @admin = users(:admin)
+    @regular = users(:regular)
+    @suspended = users(:suspended)
+  end
+
+  test "admin should have role admin" do
+    assert_equal "admin", @admin.role
+  end
+
+  test "regular user should not be admin" do
+    refute_equal "admin", @regular.role
+  end
+
+  test "suspended flag works" do
+    assert @suspended.suspended
+    refute @regular.suspended
+  end
+
+  test "suspended user not active for authentication" do
+    # This assumes you implemented in User model:
+    # def active_for_authentication?
+    #   super && !suspended?
+    # end
+    refute @suspended.active_for_authentication?
+    assert @regular.active_for_authentication?
+  end
+
+##### Sajal's scopes #####
+
 end
+
+
